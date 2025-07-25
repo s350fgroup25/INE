@@ -1,0 +1,158 @@
+Social Engineering : 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Task: Let's GoPhishing!
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	使用 Gophish 建立和發送網路釣魚電子郵件的過程
+	=> SMTP
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	啟動Gophish伺服器 :gophish.exe
+	瀏覽器 : https://127.0.0.1:3333
+	Login 憑證 : admin:phishingpasswd
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	設定網路釣魚電子郵件  : 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	設定一個傳送設定文件 : 
+	Sending Profiles > New Profile > Send Test Email 
+
+	configuration: 
+	Name: red
+	From: info <support@demo.ine.local>
+	Host: localhost:25
+	Username: red@demo.ine.local
+	Password: penetrationtesting
+
+	vic Tim victim@demo.ine.local intern
+	send> save Profile 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	設定 Gophish 登陸頁面
+	=> 目標使用者將被引導至該頁面以進行憑證收集
+	=> 將使用託管在localhost:8080
+
+	Landing Pages > New Page > Import Site 
+
+	Name : INE password reset
+	URL : http://localhost:8080
+	click : Capture Submitted Data
+	Redirect to : http://localhost:8080
+
+	Save Page
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	設定 Gophish 電子郵件模板 :
+	=> Password Reset Email.txt
+	Email Templates> New Template > Import Email
+
+	Name : INE password reset
+	Subject : Password Reset Instruction
+	click :  Add Tracking Image
+
+	Save Template 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	設定使用者和群組
+	=> targets.csv
+
+	Users & Group > New Group > Bulk Import Users
+	Name : targets
+
+	Save changes
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	設定 Gophish 活動
+	Campaigns > New Campaigns
+
+	Name :INE password reset for target company
+	Email Templates :INE password reset
+	Landing Pages :INE password reset
+	URL : http://localhost
+	Sending Profile : erd
+	Group: targets
+
+	Launch Campaign
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+HTTP Method Enumeration
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	nmap -sV -sC demo.ine.local
+	80/tcp  open  http     Apache httpd (PHP 5.5.9-1ubuntu4.25)
+
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	dirb http://demo.ine.local
+	http://demo.ine.local/uploads/  
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	use auxiliary/scanner/http/http_put
+	set RHOSTS demo.ine.local
+	set PATH /uploads
+	set FILENAME test.txt
+	set FILEDATA "Welcome To AttackDefense"
+	run
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 	hydra -L /usr/lib/python3/dist-packages/wapitiCore/data/attacks/users.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt demo.ine.local http-post-form "/login.php:name=^USER^&password=^PASS^:F=sign in"
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	name=john&password=password
+
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	檢查 Web 應用程式: 
+	http://demo.ine.local/login.php
+	Login : john:password
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	dirb http://demo.ine.local
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	使用 CURL 與主頁互動
+	GET請求 : curl -X GET demo.ine.local
+	HEAD請求 : curl -I demo.ine.local
+	OPTIONS請求 : curl -X OPTIONS demo.ine.local -v
+	POST 請求 : curl -X POST demo.ine.local
+	PUT請求 : curl -XPUT demo.ine.local
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	使用 CURL 與 login.php 頁面互動
+	允許的方法包括：GET、POST、HEAD、OPTIONS: 
+	curl -X OPTIONS demo.ine.local/login.php -v
+	POST 請求
+	curl -X POST demo.ine.local/login.php
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	將使用者名稱和密碼傳遞到login.php頁面
+	curl -X POST demo.ine.local/login.php -d "name=john&password=password" -v
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	使用 CURL 與 post.php 頁面互動。
+	OPTIONS請求 : curl -X OPTIONS demo.ine.local/post.php -v
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	與上傳目錄交互
+	http://demo.ine.local/uploads
+	發送 OPTIONS 請求到 /uploads 目錄
+	curl -X OPTIONS demo.ine.local/uploads/
+	curl -X OPTIONS demo.ine.local/uploads/ -v
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Apache Server 上啟用了 Webdav 模組，Webdav 模組允許透過PUT方法上傳檔案
+	使用PUT方法上傳檔
+	echo "Hello World" > hello.txt
+	curl demo.ine.local/uploads/ --upload-file hello.txt
+	使用DELETE方法刪除檔案
+	curl -XDELETE demo.ine.local/uploads/hello.txt
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	使用 Burp Suite 與網頁交互
+	設定FoxyProxy使用burp代理。點擊 Fox 圖示並選擇“Burp Suite”
+	send to Repeater
+	發送 GET 請求 : GET
+	發送HEAD請求 : HEAD
+	發送OPTIONS請求 : OPTIONS
+	發送POST請求 : POST
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	使用不正確的登入憑證向 login.php 發送 POST 請求
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	使用PUT方法上傳文件
+	PUT /uploads/hello.txt HTTP/1.1
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	刪除檔案
+	DELETE /uploads/hello.txt HTTP/1.1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Passive Crawling with Burp Suite
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	啟動burp套件
+	Proxy > intercept off
+	Dashboard  => Live passive crawl from Proxy
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
+	造訪過的網頁將顯示在此標籤下: 
+	Proxy > "HTTP history"
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	顯示 Web 應用程式的網站地圖
+	Target > "Site map"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

