@@ -1,16 +1,16 @@
 46. According to the Cloud Shared Responsibility Model, what are the responsibilities of the customer? (Select two)
-=> Compute instance (IaaS) OS patching
-=> Protection of personally identifiable information (PII) in a customer database
+ => Compute instance (IaaS) OS patching
+ => Protection of personally identifiable information (PII) in a customer database
 
 45. What is a common cyber-attack target in cloud-based environments?
-=> Identity
+ => Identity
 
 44 Which two of the statements below about GCP are true? (Select two)
-=> Many GCP services are certified FedRAMP High, and you can use those services when you need to meet those compliance standards.
-=> GCP documents exactly which services meet FedRAMP high standards.
+ => Many GCP services are certified FedRAMP High, and you can use those services when you need to meet those compliance standards.
+ => GCP documents exactly which services meet FedRAMP high standards.
 
 43. Azure explicitly supports all of the following regulations except...
-=> Glass-Steagall Act
+ => Glass-Steagall Act
 
 
 42. When processing sensitive, health-related workloads in the cloud, what type of agreement is necessary between the customer and the cloud provider?
@@ -140,17 +140,17 @@ Which two tools provide a simple, web-based interface for provisioning and manag
 => Lower licensing costs for most third-party software
 
 6.Your company uses a custom web application that is built using Node.js. You want to host this application in the cloud with the least amount of administrative overhead possible. Which class of cloud service should you use?
-=> Platform as a Service
+ => Platform as a Service
 
 5.When would you move a workload to the cloud?
-=> When the workload runs on a network that does not have an active Internet connection and reads data from local sensors.
+ => When the workload runs on a network that does not have an active Internet connection and reads data from local sensors.
 
 4.Which service in AWS allows you to create a billing alarm quickly?
-=> AWS CloudWatch
+ => AWS CloudWatch
 
 
 3.What compute instance (virtual machine or EC2) characteristic will likely have the most impact on your monthly cloud costs?
-=> The size of the compute instance
+ => The size of the compute instance
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
