@@ -1,6 +1,4 @@
-https://ejpt-certification.certs-study.com/
-
-step 1 : 掃描網路
+# step 1 : 掃描網路
 	 --> 測試我們找到的每個主機的網路 (Traceroute)
 		=> TCP  : sudo traceroute -T 192.168.4.5
 		=> UDP  : sudo traceroute -U 192.168.4.5
@@ -17,8 +15,7 @@ step 1 : 掃描網路
 	 --> 1.7 後利用 (保持持久性)
 	 --> 1.8 報告 (提供的詳細報告中記錄所有發現的漏洞、被利用的系統和建議的修復策略)
 	 --> 1.9 清理 (對目標網路所做的任何修改均已恢復，以使網路保持原始狀態)
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- step2 : 攻擊 Linux 機器
+# step2 : 攻擊 Linux 機器
 	 --> 2.1 掃描 TCP 端口
 	 	=> 掃描最常見的端口 : nmap 
 	 	=>  65535 : nmap
@@ -45,8 +42,8 @@ step 1 : 掃描網路
 	 	=> Web Servers
 	 		--> 伺服器 : https://hacking-webservers.popdocs.net/
 	 		--> 應用程式 : https://hacking-web-applications.popdocs.net/
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  SSH Service
+# Service 
+## SSH Service
 	  => password 
 	  	=> ssh user@remote -p port 
 	  	=> e.g ssh tom@172.21.70.110 -p 22
@@ -71,8 +68,7 @@ step 1 : 掃描網路
 			    
 		=> ssh host1 (login)
 			
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  FTP Service
+## FTP Service
    	=> 使用 FTP 
    		=> ftp <target-ip> <target-port>
    	=> 使用lftp
@@ -126,8 +122,7 @@ step 1 : 掃描網路
 		> ftp <target-ip>
 		> ftp> put shell.php
 		> URL : http://target.com/path/to/ftp/shell.php
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  Samba Service (SMB)
+ ##  Samba Service (SMB)
   	=> 列出目標伺服器上的所有可用共用
   		=> smbclient -L //target-ip
   	=> 識別目標網路內執行 SMB 服務的裝置
@@ -185,15 +180,14 @@ step 1 : 掃描網路
 		> 列出網路上的 SMB/CIFS 共享	smbtree
 		> 掛載 SMB/CIFS 共享 mount -t cifs //server/share /mnt/point
 		> 卸載 SMB/CIFS 共享 umount /mnt/point
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  Web Servers
+ ## Web Servers
   	=> Apache Vulnerabilities
   	=> Find Folders & Files
   	=> Fing login pages
   	=> Find Folders & Files
   	=> gobudter
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  step3 : 攻擊 Windows 機器
+ 
+# step3 : 攻擊 Windows 機器
 	  --> 2.1 辨識即時主機 
 	  	=> 識別活動主機及其開放連接埠
 	  	=> nmap -sT -p- 192.168.1.0/24
@@ -206,12 +200,11 @@ step 1 : 掃描網路
 	  --> 2.4 文件調查結果
 	  	=> 表格 : IP位址 -- 作業系統版本 -- 開放埠 -- 漏洞
   
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- NetBIOS Attacks
+ ## NetBIOS Attacks
  	=> https://netbios-penetration-testing.popdocs.net/
  	=> 入侵139端口
  	=> https://rdp-penetration-testing.popdocs.net/?_gl=1*1rag2pe*_ga*MTkxNzM3ODAzMi4xNzM2NTAyOTIw*_ga_WB8YYH3WJK*MTczNjUwMjkyMC4xLjEuMTczNjUwMzMwNi42MC4wLjA.
- ~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+ 	~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 	Nbstat
 	 ~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 	NmbLookup 
@@ -232,13 +225,12 @@ step 1 : 掃描網路
 		=> Enumerating User Accounts
 		=> Administrator ID
 		=> NetBIOS Name Service Spoofer
- msf > use auxiliary/spoof/nbns/nbns_responsemsf auxiliary(nbns_response) > show actions...actions...msf auxiliary(nbns_response) > set ACTION < action-name >msf auxiliary(nbns_response) > show options...show and set options...msf auxiliary(nbns_response) > run
+ 	msf > use auxiliary/spoof/nbns/nbns_responsemsf auxiliary(nbns_response) > show actions...actions...msf auxiliary(nbns_response) > set ACTION < action-name >msf auxiliary(nbns_response) > show options...show and set options...msf auxiliary(nbns_response) > run
   
   		=> smb_ms17_010
   		=> ms17_010_eternalblue
   
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-  step 4 : 旋轉方法論 Pivoting Methodology
+ # step 4 : 旋轉方法論 Pivoting Methodology
 	4.1 旋轉方法論
 		=> 1. Initial Compromise 初步妥協 -- 目標網路內初始系統的存取權
 		=> 2. Internal Reconnaissance 內部偵察 -- 了解網路拓撲、識別潛在目標並收集有關安全措施的資訊
@@ -298,8 +290,7 @@ step 1 : 掃描網路
 			=> 允許 Windows 系統上的多個 RDP（遠端桌面協定）會話，方便遠端存取
 		=> Veil Framework
 	  		=> 用於產生和交付 Metasploit 有效負載的工具集合，包括適用於 Windows 環境的工具
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-step5 : Linux 後使用 (POST)
+# step5 : Linux 後使用 (POST)
 	=> Information Gathering
 		=> System Identification 系統識別：識別 Linux 發行版、核心版本和其他系統詳細資訊。
 		=> User Enumeration 使用者枚舉：列舉受感染系統上的使用者及其權限。
@@ -328,8 +319,7 @@ step5 : Linux 後使用 (POST)
 	=> Resource Abuse
 		=> CPU 與記憶體使用：利用資源進行加密貨幣挖礦或拒絕服務攻擊。
 		=> 網路掃描：掃描內部網路以尋找潛在目標。
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-step6 : Windows 後利用
+# step6 : Windows 後利用
 	=> Information Gathering (System Identification / User Enumeration)
   	=> Privilege Escalation
 		=> Token Manipulation: Manipulate access tokens to escalate privileges.
@@ -345,10 +335,7 @@ step6 : Windows 後利用
 		=> 資料庫利用：利用資料庫進行資料檢索和操作。
 		=> Web 應用程式攻擊：識別並利用伺服器上託管的 Web 應用程式中的漏洞。
 		=> MS Office 巨集利用：利用 Microsoft Office 文件中的巨集來執行程式碼
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-Networking
+# Networking
 	OSI層 : 
 		=> 物理層 => 資料鏈結層 => 網路層 => 傳輸層 => 會話層 => 表示層 => 應用層 =
 		=> Physical Layer =>Data Link=> Network=>Transport=>Session=>Presentation => Application 
@@ -372,11 +359,9 @@ Networking
 	 路由
 	 	=> 新增靜態路由，請使用ip route add命令 (網路範圍、網關位址和裝置名稱)
 	 	=> ip route add 10.10.10.0/24 via 10.10.10.1 dev tun0
-	 	=> 告訴作業系統將所有發送到網路的流量透過網路10.10.10.0/24介面傳送到下一跳網關。10.10.10.1 tun0
-	 	
+	 	=> 告訴作業系統將所有發送到網路的流量透過網路10.10.10.0/24介面傳送到下一跳網關。10.10.10.1 tun0	
  	
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
- Network Protocols
+## Network Protocols
 	 => FTP 21
 	 	 => 預設憑證
 	 	 	> guest:guest
@@ -499,8 +484,7 @@ Networking
 	  	 	> Mimikatz
 	  	 		> Invoke-Mimikatz -Command '"ts::sessions"'
 	  	 		> Invoke-Mimikatz -Command '"token::elevate" "ts::remote /id:4"'
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-Web Attacks
+# Web Attacks
 	=> XSS 
 		=> 將惡意腳本注入其他使用者看到並與之互動的內容中
 		=> 竊取受害者的會話 cookie 或其他敏感資訊、冒充使用者	
@@ -534,13 +518,11 @@ Web Attacks
 	=> jpg
 		=> php --define phar.readonly=0 shell.php && mv shell.phar shell.jpg
 		=> /index.php?language=phar://./profile_images/shell.jpg%2Fshell.txt&cmd=id
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-Web CMS Attacks
+## Web CMS Attacks
 	=> Wordpress
 	=> Joomla
 	=> TomCat
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-Exploits
+## Exploits
 	=> Search Exploits
 	=> Windows
 		ps
@@ -560,8 +542,7 @@ Exploits
 		After PrivEsc
 		migrate <pid>
 		hashdump
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-Tools
+## Tools
 	=> dirb 
 		=> dirb http://10.10.10.10/dir -u admin:admin
 	=> Gobuster
@@ -598,10 +579,12 @@ Tools
 	=> MD5 Crack
 	=> CyverChef
 	=> SecLists
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-thm : DogCat // Archangel // OWASP Juice Shop
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-SMB Penetration Testing
-	=> port 445
-	=> https://smb-penetration-testing.popdocs.net/smb-attacks/exploits/windows
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 	
+ 
+ ## Other platform 
+	thm 
+ 		=> DogCat // Archangel // OWASP Juice Shop
+	
+	SMB Penetration Testing
+		=> port 445
+		=> https://smb-penetration-testing.popdocs.net/smb-attacks/exploits/windows
+	
