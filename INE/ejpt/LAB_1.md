@@ -7,8 +7,7 @@
 	nmap -Pn -sV demo.ine.local
 		-p 443 (https)
 	
- 	Scan the Server 1: 
-  		nmap demo.ine.local -p- -sV
+ 	Scan the Server 1: nmap demo.ine.local -p- -sV
 ## Assessment Methodologies: Footprinting and Scanning CTF 1
 	nmap -Pn -sV -sC -p- target.ine.local
 
