@@ -6,7 +6,7 @@
 		啟動Gophish伺服器 :gophish.exe
 		瀏覽器 : https://127.0.0.1:3333
 		Login 憑證 : admin:phishingpasswd
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	設定網路釣魚電子郵件  : 
 		設定一個傳送設定文件 : 
 		Sending Profiles > New Profile > Send Test Email 
@@ -35,8 +35,8 @@
 		Save Page
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	設定 Gophish 電子郵件模板 :
-	=> Password Reset Email.txt
-		Email Templates> New Template > Import Email
+		=> Password Reset Email.txt
+		=> Email Templates> New Template > Import Email
 	
 		Name : INE password reset
 		Subject : Password Reset Instruction
@@ -83,8 +83,8 @@
 	name=john&password=password
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	檢查 Web 應用程式: 
-	http://demo.ine.local/login.php
-	Login : john:password
+		http://demo.ine.local/login.php
+		Login : john:password
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	dirb http://demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,27 +114,28 @@
 			curl -X OPTIONS demo.ine.local/uploads/ -v
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Apache Server 上啟用了 Webdav 模組，Webdav 模組允許透過PUT方法上傳檔案
-	使用PUT方法上傳檔
-		echo "Hello World" > hello.txt
-		curl demo.ine.local/uploads/ --upload-file hello.txt
-	使用DELETE方法刪除檔案
-		curl -XDELETE demo.ine.local/uploads/hello.txt
+		使用PUT方法上傳檔
+			echo "Hello World" > hello.txt
+			curl demo.ine.local/uploads/ --upload-file hello.txt
+		使用DELETE方法刪除檔案
+			curl -XDELETE demo.ine.local/uploads/hello.txt
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	使用 Burp Suite 與網頁交互
 		設定FoxyProxy使用burp代理。點擊 Fox 圖示並選擇“Burp Suite”
-	send to Repeater
-		發送 GET 請求 : GET
-		發送HEAD請求 : HEAD
-		發送OPTIONS請求 : OPTIONS
-		發送POST請求 : POST
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	使用不正確的登入憑證向 login.php 發送 POST 請求
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	使用PUT方法上傳文件
-		PUT /uploads/hello.txt HTTP/1.1
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	刪除檔案
-		DELETE /uploads/hello.txt HTTP/1.1
+  
+		send to Repeater
+			發送 GET 請求 : GET
+			發送HEAD請求 : HEAD
+			發送OPTIONS請求 : OPTIONS
+			發送POST請求 : POST
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		使用不正確的登入憑證向 login.php 發送 POST 請求
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		使用PUT方法上傳文件
+			PUT /uploads/hello.txt HTTP/1.1
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		刪除檔案
+			DELETE /uploads/hello.txt HTTP/1.1
 ## Passive Crawling with Burp Suite
 	啟動burp套件
 		Proxy > intercept off
