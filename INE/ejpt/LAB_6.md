@@ -193,7 +193,6 @@
 	xfreerdp /u:administrator /p:hacker_123321 /v:demo.ine.local
 
 ## Clearing Windows Event logs
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 		80/tcp    open  http               BadBlue httpd 
 		3389/tcp  open  ssl/ms-wbt-server?
