@@ -1,6 +1,5 @@
-Social Engineering : 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Task: Let's GoPhishing!
+# Social Engineering : 
+## Task: Let's GoPhishing!
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	使用 Gophish 建立和發送網路釣魚電子郵件的過程
 	=> SMTP
@@ -67,8 +66,7 @@ Task: Let's GoPhishing!
 
 	Launch Campaign
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-HTTP Method Enumeration
+## HTTP Method Enumeration
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 	80/tcp  open  http     Apache httpd (PHP 5.5.9-1ubuntu4.25)
@@ -142,8 +140,7 @@ HTTP Method Enumeration
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	刪除檔案
 	DELETE /uploads/hello.txt HTTP/1.1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Passive Crawling with Burp Suite
+## Passive Crawling with Burp Suite
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	啟動burp套件
 	Proxy > intercept off
@@ -154,5 +151,3 @@ Passive Crawling with Burp Suite
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	顯示 Web 應用程式的網站地圖
 	Target > "Site map"
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
